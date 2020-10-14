@@ -18,7 +18,7 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with DarkMode-GA.
 If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
-  //
+
   // defined('ABSPATH') or die('You cannot enter');
   // add_filter(
   //   'rest_authentication_errors',
@@ -51,9 +51,6 @@ If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
   //   }
   // );
 
-
-
-
 function html_form_code() {
   echo '
     <style>
@@ -70,7 +67,6 @@ function html_form_code() {
       }
     </style>
   ';
-
   echo '
     <p>We encourage you to take the time to share with us some outline information that will help us to understand your situation and respond back to you.
     Please try to avoid giving just \'yes\' or \'no\' answers.
@@ -168,88 +164,74 @@ function html_form_code() {
         <div>
           <label> What\'s up? Please tell us. <br>
             <span class="ga-form whatsup">
-              <textarea rows="1" cols="35" name="whatsup">' . ( isset( $_POST["whatsup"] ) ? esc_attr( $_POST["whatsup"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="whatsup">' . ( isset( $_POST["whatsup"] ) ? $whatsup : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> What\'s the cause of the emotional pain you’re feeling deep inside? (If you don\'t know, that\'s ok) <br>
             <span class="ga-form cause">
-              <textarea rows="1" cols="35" name="cause">' . ( isset( $_POST["cause"] ) ? esc_attr( $_POST["cause"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="cause">' . ( isset( $_POST["cause"] ) ? $cause : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Are you aware of any addictions you may have? Could you share with us? <br>
             <span class="ga-form addictions">
-              <textarea rows="1" cols="35" name="addictions">' . ( isset( $_POST["addictions"] ) ? esc_attr( $_POST["addictions"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="addictions">' . ( isset( $_POST["addictions"] ) ? $addictions : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Do you struggle with self-harm? <br>
             <span class="ga-form selfharm">
-              <textarea rows="1" cols="35" name="selfharm">' . ( isset( $_POST["selfharm"] ) ? esc_attr( $_POST["selfharm"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="selfharm">' . ( isset( $_POST["selfharm"] )? $selfharm : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Have you visited your doctor recently? <br>
             <span class="ga-form doctor">
-              <textarea rows="1" cols="35" name="doctor">' . ( isset( $_POST["doctor"] ) ? esc_attr( $_POST["doctor"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="doctor">' . ( isset( $_POST["doctor"] ) ? $doctor : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Are you on any medications? If so, please share with us. <br>
             <span class="ga-form medication">
-              <textarea rows="1" cols="35" name="medication">' . ( isset( $_POST["medication"] ) ? esc_attr( $_POST["medication"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="medication">' . ( isset( $_POST["medication"] ) ? $medication : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Have you had or are you having professional counselling or psychotherapy? Please also let us know if you are currently having these sessions. <br>
             <span class="ga-form counselling">
-              <textarea rows="1" cols="35" name="counselling">' . ( isset( $_POST["counselling"] ) ? esc_attr( $_POST["counselling"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="counselling">' . ( isset( $_POST["counselling"] ) ? $counselling : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Who do you have around you in terms of support, family, and friends? Please describe what this all looks like to you. <br>
             <span class="ga-form support">
-              <textarea rows="1" cols="35" name="support">' . ( isset( $_POST["support"] ) ? esc_attr( $_POST["support"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="support">' . ( isset( $_POST["support"] ) ? $support : null ) . '</textarea>
             </span>
           </label>
         </div>
-
         <div>
           <label> Please share any other information you feel would be helpful to us in understanding your situation. <br>
             <span class="ga-form information">
-              <textarea rows="1" cols="35" name="information">' . ( isset( $_POST["information"] ) ? esc_attr( $_POST["information"] ) : '' ) . '</textarea>
+              <textarea rows="1" cols="35" name="information">' . ( isset( $_POST["information"] ) ? $information : null ) . '</textarea>
             </span>
           </label>
         </div>
 
-
-
-
-
         Use of the Your Life Counts online submission form confirms your acceptance of these terms and conditions. If you do not agree, please do not submit this form to us.
-
         The information you give is confidential between you and YLC. We need this information to be able to assess your situation and determine whether we are a good fit for your support needs just now or whether we need to refer you to a partner agency with more experience/ specialism in your situation. You agree to YLC responding / communicating with you via email.
-
 
         <div>
           <label> I understand and agree to the terms and conditions
             <span class="ga-form terms">
-              <input type="checkbox" name="terms">' . ( isset( $_POST["terms"] ) ? esc_attr( $_POST["terms"] ) : '' ) . '</textarea>
+              <input type="checkbox" name="terms">' . ( isset( $_POST["terms"] ) ? $terms : null ) . '</textarea>
             </span>
           </label>
         </div>
@@ -257,83 +239,65 @@ function html_form_code() {
         <input type="submit" name="submit" value="Send"/>
     </form>
   ';
-
-
-/*
-echo '
-  <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-  <div>
-  <label for="username">Username <strong>*</strong></label>
-  <input type="text" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '">
-  </div>
-
-  <div>
-  <label for="email">Email <strong>*</strong></label>
-  <input type="text" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
-  </div>
-
-  <div>
-  <label for="firstname">First Name</label>
-  <input type="text" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '">
-  </div>
-
-  <div>
-  <label for="website">Last Name</label>
-  <input type="text" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '">
-  </div>
-
-  <div>
-  <label for="bio">About / Bio</label>
-  <textarea name="bio">' . ( isset( $_POST['bio']) ? $bio : null ) . '</textarea>
-  </div>
-  <input type="submit" name="submit" value="Register"/>
-  </form>
-';
-
-	echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">
-  <p>
-  Your Name (required) <br/>
-  <input type="text" name="cf-name" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST["cf-name"] ) ? esc_attr( $_POST["cf-name"] ) : '' ) . '" size="40" />
-  </p>
-  <p>
-  Your Email (required) <br/>
-  <input type="email" name="cf-email" value="' . ( isset( $_POST["cf-email"] ) ? esc_attr( $_POST["cf-email"] ) : '' ) . '" size="40" />
-  </p>
-  <p>
-  Subject (required) <br/>
-  <input type="text" name="cf-subject" pattern="[a-zA-Z ]+" value="' . ( isset( $_POST["cf-subject"] ) ? esc_attr( $_POST["cf-subject"] ) : '' ) . '" size="40" />';
-	echo '</p>';
-	echo '<p>';
-	echo 'Your Message (required) <br/>';
-	echo '<textarea rows="10" cols="35" name="cf-message">' . ( isset( $_POST["cf-message"] ) ? esc_attr( $_POST["cf-message"] ) : '' ) . '</textarea>';
-	echo '</p>';
-	echo '<p><input type="submit" name="cf-submitted" value="Send"></p>';
-	echo '</form>';
 }
-*/
 function deliver_mail() {
+
   // if the submit button is clicked, send the email
 	if ( isset( $_POST['submit'] ) ) {
-
 		// sanitize form values
-		$name    = sanitize_text_field( $_POST["yourname"] );
+		$yourname    = sanitize_text_field( $_POST["yourname"] );
+		$streetaddress  = sanitize_text_field( $_POST["streetaddress"] );
+		$city    = sanitize_text_field( $_POST["city"] );
+		$state    = sanitize_text_field( $_POST["state"] );
+		$country    = sanitize_text_field( $_POST["country"] );
 		$email   = sanitize_email( $_POST["email"] );
+		$phone    = sanitize_text_field( $_POST["phone"] );
+
+    $gender = sanitize_text_field( $_POST["gender"] );
+    $age = sanitize_text_field( $_POST["age"] );
+
+    $whatsup = esc_textarea( $_POST["whatsup"] );
+    $cause = esc_textarea( $_POST["cause"] );
+    $addictions = esc_textarea( $_POST["addictions"] );
+    $selfharm = esc_textarea( $_POST["selfharm"] );
+    $doctor = esc_textarea( $_POST["doctor"] );
+    $medication = esc_textarea( $_POST["medication"] );
+    $counselling = esc_textarea( $_POST["counselling"] );
+
+    $support = esc_textarea( $_POST["support"] );
+    $information = esc_textarea( $_POST["information"] );
+    $terms = $_POST["terms"];
 
 
+    registration_validation($yourname, $terms, $email, $phone, $city, $country);
 
-
-
-
-
-
-
-		$subject = sanitize_text_field( $_POST["cfsubject"] );
-		$message = esc_textarea( $_POST["cf-message"] );
+//    $message = "test";
+    $message = '
+      Name: ' . $yourname . ' <br>
+      Street Adress: ' . $streetaddress . ' <br>
+      City: ' . $city . ' <br>
+      State: ' . $state . ' <br>
+      Country: ' . $country . ' <br>
+      Email: ' . $email . ' <br>
+      Phone: ' . $phone . ' <br>
+      Gender: ' . $gender . ' <br>
+      Age: ' . $age . ' <br>
+      <br>
+      Whatsup: ' . $whatsup . ' <br>
+      Cause: ' . $cause . ' <br>
+      Addictions: ' . $addictions . ' <br>
+      Selfharm: ' . $selfharm . ' <br>
+      Doctor: ' . $doctor . ' <br>
+      Medication: ' . $medication . ' <br>
+      Counselling: ' . $counselling . ' <br>
+      Support: ' . $support . ' <br>
+      Information: ' . $information . ' <br>
+    ';
 
 		// get the blog administrator's email address
 		$to = get_option( 'admin_email' );
-
-		$headers = "From: $name <$email>" . "\r\n";
+    $subject = "New form from ylc";
+		$headers = "From: $yourname <$email>" . "\r\n";
 
 		// If email has been process for sending, display a success message
 		if ( wp_mail( $to, $subject, $message, $headers ) ) {
@@ -344,241 +308,42 @@ function deliver_mail() {
 			echo 'An unexpected error occurred';
 		}
 	}
-  /*
-	// if the submit button is clicked, send the email
-	if ( isset( $_POST['cf-submitted'] ) ) {
-
-		// sanitize form values
-		$name    = sanitize_text_field( $_POST["cf-name"] );
-		$email   = sanitize_email( $_POST["cf-email"] );
-		$subject = sanitize_text_field( $_POST["cf-subject"] );
-		$message = esc_textarea( $_POST["cf-message"] );
-
-		// get the blog administrator's email address
-		$to = get_option( 'admin_email' );
-
-		$headers = "From: $name <$email>" . "\r\n";
-
-		// If email has been process for sending, display a success message
-		if ( wp_mail( $to, $subject, $message, $headers ) ) {
-			echo '<div>';
-			echo '<p>Thanks for contacting me, expect a response soon.</p>';
-			echo '</div>';
-		} else {
-			echo 'An unexpected error occurred';
-		}
-	}
-  */
-}
-
-function cf_shortcode() {
-	ob_start();
-	deliver_mail();
-	html_form_code();
-
-	return ob_get_clean();
-}
-
-add_shortcode( 'sitepoint_contact_form', 'cf_shortcode' );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-function registration_form( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio ) {
-    echo '
-    <style>
-    div {
-        margin-bottom:2px;
-    }
-
-    input{
-        margin-bottom:4px;
-    }
-    </style>
-    ';
-
-    echo '
-    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-    <div>
-    <label for="username">Username <strong>*</strong></label>
-    <input type="text" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '">
-    </div>
-
-    <div>
-    <label for="email">Email <strong>*</strong></label>
-    <input type="text" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
-    </div>
-
-    <div>
-    <label for="firstname">First Name</label>
-    <input type="text" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '">
-    </div>
-
-    <div>
-    <label for="website">Last Name</label>
-    <input type="text" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '">
-    </div>
-
-    <div>
-    <label for="bio">About / Bio</label>
-    <textarea name="bio">' . ( isset( $_POST['bio']) ? $bio : null ) . '</textarea>
-    </div>
-    <input type="submit" name="submit" value="Register"/>
-    </form>
-    ';
+  html_form_code();
 }
 
 
-function registration_validation( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio )  {
-	global $reg_errors;
-	$reg_errors = new WP_Error;
-	if ( empty( $username ) || empty( $password ) || empty( $email ) ) {
+function registration_validation($yourname, $terms, $email, $phone, $city, $country){
+  global $reg_errors;
+  $reg_errors = new WP_Error;
+  if ( empty( $terms ) ){
+    $reg_errors->add('terms', 'You need to accept the terms and agreement');
+  }
+  if ( empty( $yourname ) || empty( $email ) || empty( $phone ) || empty( $city ) || empty( $country ) ) {
     $reg_errors->add('field', 'Required form field is missing');
-	}
-	if ( 4 > strlen( $username ) ) {
-	    $reg_errors->add( 'username_length', 'Username too short. At least 4 characters is required' );
-	}
-	// if ( username_exists( $username ) ) {
-	// 		$reg_errors->add('user_name', 'Sorry, that username already exists!');
-	// }
-	if ( ! validate_username( $username ) ) {
-    $reg_errors->add( 'username_invalid', 'Sorry, the username you entered is not valid' );
-	}
-	// if ( 5 > strlen( $password ) ) {
-  //     $reg_errors->add( 'password', 'Password length must be greater than 5' );
-  // }
-	if ( !is_email( $email ) ) {
+  }
+  if ( 2 > strlen( $yourname ) ) {
+      $reg_errors->add( 'username_length', 'Your name is too short. At least 3 characters is required' );
+  }
+  if ( !is_email( $email ) ) {
     $reg_errors->add( 'email_invalid', 'Email is not valid' );
-	}
-	// if ( email_exists( $email ) ) {
-	//     $reg_errors->add( 'email', 'Email Already in use' );
-	// }
-	// if ( ! empty( $website ) ) {
-	//     if ( ! filter_var( $website, FILTER_VALIDATE_URL ) ) {
-	//         $reg_errors->add( 'website', 'Website is not a valid URL' );
-	//     }
-	// }
-	if ( is_wp_error( $reg_errors ) ) {
-
+  }
+  if ( is_wp_error( $reg_errors ) ) {
     foreach ( $reg_errors->get_error_messages() as $error ) {
-
         echo '<div>';
         echo '<strong>ERROR</strong>:';
         echo $error . '<br/>';
         echo '</div>';
-
     }
-
-	}
-
+  }
 }
 
 
+function form_shortcode() {
+	ob_start();
+	deliver_mail();
+//	html_form_code();
 
-
-function complete_registration() {
-    global $reg_errors, $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
-    if ( 1 > count( $reg_errors->get_error_messages() ) ) {
-        $userdata = array(
-        'user_login'    =>   $username,
-        'user_email'    =>   $email,
-        'user_pass'     =>   $password,
-        'user_url'      =>   $website,
-        'first_name'    =>   $first_name,
-        'last_name'     =>   $last_name,
-        'nickname'      =>   $nickname,
-        'description'   =>   $bio,
-        );
-        $user = wp_insert_user( $userdata );
-        echo 'Registration complete. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
-    }
+	return ob_get_clean();
 }
 
-
-
-function custom_registration_function() {
-    if ( isset($_POST['submit'] ) ) {
-        registration_validation(
-        $_POST['username'],
-        $_POST['password'],
-        $_POST['email'],
-        $_POST['website'],
-        $_POST['fname'],
-        $_POST['lname'],
-        $_POST['nickname'],
-        $_POST['bio']
-        );
-
-        // sanitize user form input
-        global $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
-        $username   =   sanitize_user( $_POST['username'] );
-        $password   =   esc_attr( $_POST['password'] );
-        $email      =   sanitize_email( $_POST['email'] );
-        $website    =   esc_url( $_POST['website'] );
-        $first_name =   sanitize_text_field( $_POST['fname'] );
-        $last_name  =   sanitize_text_field( $_POST['lname'] );
-        $nickname   =   sanitize_text_field( $_POST['nickname'] );
-        $bio        =   esc_textarea( $_POST['bio'] );
-
-        // call @function complete_registration to create the user
-        // only when no WP_error is found
-        complete_registration(
-        $username,
-        $password,
-        $email,
-        $website,
-        $first_name,
-        $last_name,
-        $nickname,
-        $bio
-        );
-    }
-
-    registration_form(
-        $username,
-        $password,
-        $email,
-        $website,
-        $first_name,
-        $last_name,
-        $nickname,
-        $bio
-        );
-}
-
-
-// Register a new shortcode: [cr_custom_registration]
-add_shortcode( 'cr_custom_registration', 'custom_registration_shortcode' );
-
-// The callback function that will replace [book]
-function custom_registration_shortcode() {
-    ob_start();
-    custom_registration_function();
-    return ob_get_clean();
-}
-
-?>
+add_shortcode( 'sitepoint_contact_form', 'form_shortcode' );
