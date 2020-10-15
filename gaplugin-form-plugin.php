@@ -52,6 +52,8 @@ If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
   // );
 
 function html_form_code() {
+
+  global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
   echo '
     <style>
       div {
@@ -64,6 +66,9 @@ function html_form_code() {
       	width: 80%;
       	background-color: rgba(230,230,230,1);
       	padding: 5px;
+      }
+      .terms input{
+      	width: auto !important;
       }
     </style>
   ';
@@ -138,14 +143,14 @@ function html_form_code() {
           <label> Gender <br>
             <span class="ga-form gender">
               <select name="gender" id="gender">
-                <option value="notanswered">Prefer Not to answer</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="transgender">Trans Gender</option>
-                <option value="genderqueer">Genderqueer</option>
-                <option value="genderless">Genderless</option>
-                <option value="nonbinary">Non Binary</option>
-                <option value="other">Other</option>
+                <option value="notanswered" ' . ( ($_POST['gender'] === "notanswered") ? "selected" : null ) . '>Prefer Not to answer</option>
+                <option value="male" ' . ( ($_POST['gender'] === "male") ? "selected" : null ) . '>Male</option>
+                <option value="female" ' . ( ($_POST['gender'] === "female") ? "selected" : null ) . '>Female</option>
+                <option value="transgender" ' . ( ($_POST['gender'] === "transgender") ? "selected" : null ) . '>Trans Gender</option>
+                <option value="genderqueer" ' . ( ($_POST['gender'] === "genderqueer") ? "selected" : null ) . '>Genderqueer</option>
+                <option value="genderless" ' . ( ($_POST['gender'] === "genderless") ? "selected" : null ) . '>Genderless</option>
+                <option value="nonbinary" ' . ( ($_POST['gender'] === "nonbinary") ? "selected" : null ) . '>Non Binary</option>
+                <option value="other" ' . ( ($_POST['gender'] === "other") ? "selected" : null ) . '>Other</option>
               </select>
             </span>
           </label>
@@ -162,85 +167,99 @@ function html_form_code() {
         <h2>Situation Information</h2>
 
         <div>
-          <label> What\'s up? Please tell us. <br>
+          <label> ' . $whatsup_q . ' <br>
             <span class="ga-form whatsup">
               <textarea rows="1" cols="35" name="whatsup">' . ( isset( $_POST["whatsup"] ) ? $_POST["whatsup"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> What\'s the cause of the emotional pain you’re feeling deep inside? (If you don\'t know, that\'s ok) <br>
+          <label> ' . $cause_q . ' <br>
             <span class="ga-form cause">
               <textarea rows="1" cols="35" name="cause">' . ( isset( $_POST["cause"] ) ? $_POST["cause"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Are you aware of any addictions you may have? Could you share with us? <br>
+          <label> ' . $addictions_q . ' <br>
             <span class="ga-form addictions">
               <textarea rows="1" cols="35" name="addictions">' . ( isset( $_POST["addictions"] ) ? $_POST["addictions"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Do you struggle with self-harm? <br>
+          <label> ' . $selfharm_q . ' <br>
             <span class="ga-form selfharm">
               <textarea rows="1" cols="35" name="selfharm">' . ( isset( $_POST["selfharm"] )? $_POST["selfharm"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Have you visited your doctor recently? <br>
+          <label> ' . $doctor_q . ' <br>
             <span class="ga-form doctor">
               <textarea rows="1" cols="35" name="doctor">' . ( isset( $_POST["doctor"] ) ? $_POST["doctor"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Are you on any medications? If so, please share with us. <br>
+          <label> ' . $medication_q . ' <br>
             <span class="ga-form medication">
               <textarea rows="1" cols="35" name="medication">' . ( isset( $_POST["medication"] ) ? $_POST["medication"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Have you had or are you having professional counselling or psychotherapy? Please also let us know if you are currently having these sessions. <br>
+          <label> ' . $counselling_q . ' <br>
             <span class="ga-form counselling">
               <textarea rows="1" cols="35" name="counselling">' . ( isset( $_POST["counselling"] ) ? $_POST["counselling"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Who do you have around you in terms of support, family, and friends? Please describe what this all looks like to you. <br>
+          <label> ' . $support_q . ' <br>
             <span class="ga-form support">
               <textarea rows="1" cols="35" name="support">' . ( isset( $_POST["support"] ) ? $_POST["support"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
-          <label> Please share any other information you feel would be helpful to us in understanding your situation. <br>
+          <label> ' . $information_q . ' <br>
             <span class="ga-form information">
               <textarea rows="1" cols="35" name="information">' . ( isset( $_POST["information"] ) ? $_POST["information"] : null ) . '</textarea>
             </span>
           </label>
         </div>
-
+        <p>
         Use of the Your Life Counts online submission form confirms your acceptance of these terms and conditions. If you do not agree, please do not submit this form to us.
         The information you give is confidential between you and YLC. We need this information to be able to assess your situation and determine whether we are a good fit for your support needs just now or whether we need to refer you to a partner agency with more experience/ specialism in your situation. You agree to YLC responding / communicating with you via email.
-
+        </p>
         <div>
-          <label> I understand and agree to the terms and conditions
+          <label>
             <span class="ga-form terms">
-              <input type="checkbox" name="terms">' . ( isset( $_POST["terms"] ) ? $_POST["terms"] : null ) . '</textarea>
+              <input type="checkbox" name="terms" ' . ( isset($_POST['terms']) ? "checked" : null ) . '>
             </span>
+            I understand and agree to the terms and conditions
           </label>
         </div>
-
+        <br>
         <input type="submit" name="submit" value="Send"/>
     </form>
   ';
 }
 function deliver_mail() {
+
+
+  global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
+
+  $whatsup_q = "What's up? Please tell us.";
+  $cause_q = "What's the cause of the emotional pain you’re feeling deep inside? (If you don't know, that's ok)";
+  $addictions_q = "Are you aware of any addictions you may have? Could you share with us?";
+  $selfharm_q = "Do you struggle with self-harm?";
+  $doctor_q = "Have you visited your doctor recently?";
+  $medication_q = "Are you on any medications? If so, please share with us.";
+  $counselling_q = "Have you had or are you having professional counselling or psychotherapy? Please also let us know if you are currently having these sessions.";
+  $support_q = "Who do you have around you in terms of support, family, and friends? Please describe what this all looks like to you.";
+  $information_q = "Please share any other information you feel would be helpful to us in understanding your situation.";
 
   // if the submit button is clicked, send the email
 	if ( isset( $_POST['submit'] ) ) {
@@ -256,6 +275,7 @@ function deliver_mail() {
     );
 		// sanitize form values
     global $yourname, $streetaddress, $city, $state, $country, $email, $phone, $gender, $age, $whatsup, $cause, $addictions, $selfharm, $doctor, $medication, $counselling, $support, $information, $terms;
+
 
 		$yourname    = sanitize_text_field( $_POST["yourname"] );
 		$streetaddress  = sanitize_text_field( $_POST["streetaddress"] );
@@ -294,20 +314,37 @@ function deliver_mail() {
       Gender: ' . $gender . '
       Age: ' . $age . '
 
-      Whatsup: ' . $whatsup . '>
-      Cause: ' . $cause . '
-      Addictions: ' . $addictions . '
-      Selfharm: ' . $selfharm . '
-      Doctor: ' . $doctor . '
-      Medication: ' . $medication . '
-      Counselling: ' . $counselling . '
-      Support: ' . $support . '
-      Information: ' . $information . '
+      - ' . $whatsup_q . ':
+      ' . $whatsup . '
+
+      - ' . $cause_q . ':
+      ' . $cause . '
+
+      - ' . $addictions_q . ':
+      ' . $addictions . '
+
+      - ' . $selfharm_q . ':
+      ' . $selfharm . '
+
+      - ' . $doctor_q . ':
+      ' . $doctor . '
+
+      - ' . $medication_q . ':
+      ' . $medication . '
+
+      - ' . $counselling_q . ':
+      ' . $counselling . '
+
+      - ' . $support_q . ':
+      ' . $support . '
+
+      - ' . $information_q . ':
+      ' . $information . '
     ';
 
 		// get the blog administrator's email address
 		$to = get_option( 'admin_email' );
-    $subject = "New form from ylc";
+    $subject = "New form from ylc from $yourname";
 		$headers = "From: $yourname <$email>" . "\r\n";
 
     global $reg_errors;
