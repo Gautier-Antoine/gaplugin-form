@@ -80,7 +80,7 @@ function html_form_code() {
         <div>
           <label> Your Name <strong">*</strong><br>
             <span class="ga-form yourname">
-              <input type="text" name="yourname" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['yourname'] ) ? $yourname : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="yourname" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['yourname'] ) ? $_POST['yourname'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
@@ -89,28 +89,28 @@ function html_form_code() {
         <div>
           <label> Street Address <br>
             <span class="ga-form streetaddress">
-              <input type="text" name="streetaddress" value="' . ( isset( $_POST['streetaddress'] ) ? $streetaddress : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="streetaddress" value="' . ( isset( $_POST['streetaddress'] ) ? $_POST['streetaddress'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
         <div>
           <label> City <strong">*</strong><br>
             <span class="ga-form city">
-              <input type="text" name="city" pattern="[a-zA-Z ]+" value="' . ( isset( $_POST['city'] ) ? $city : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="city" pattern="[a-zA-Z ]+" value="' . ( isset( $_POST['city'] ) ? $_POST['city'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
         <div>
           <label> Province/State <br>
             <span class="ga-form state">
-              <input type="text" name="state" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['state'] ) ? $state : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="state" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['state'] ) ? $_POST['state'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
         <div>
           <label> Country <strong">*</strong><br>
             <span class="ga-form country">
-              <input type="text" name="country" pattern="[a-zA-Z ]+" value="' . ( isset( $_POST['country'] ) ? $country : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="country" pattern="[a-zA-Z ]+" value="' . ( isset( $_POST['country'] ) ? $_POST['country'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
@@ -119,14 +119,14 @@ function html_form_code() {
         <div>
           <label> E-Mail Address <strong">*</strong><br>
             <span class="ga-form email">
-              <input type="email" name="email" value="' . ( isset( $_POST['email'] ) ? $email : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="email" name="email" value="' . ( isset( $_POST['email'] ) ? $_POST['email'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
         <div>
           <label> Telephone Number <strong">*</strong><br>
             <span class="ga-form phone">
-              <input type="tel" name="phone" value="' . ( isset( $_POST['phone'] ) ? $phone : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="tel" name="phone" value="' . ( isset( $_POST['phone'] ) ? $_POST['phone'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
@@ -153,7 +153,7 @@ function html_form_code() {
         <div>
           <label> Age Range (e.g. 20-30) <br>
             <span class="ga-form age">
-              <input type="text" name="age" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['age'] ) ? $age : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="age" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['age'] ) ? $_POST['age'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
@@ -164,63 +164,63 @@ function html_form_code() {
         <div>
           <label> What\'s up? Please tell us. <br>
             <span class="ga-form whatsup">
-              <textarea rows="1" cols="35" name="whatsup">' . ( isset( $_POST["whatsup"] ) ? $whatsup : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="whatsup">' . ( isset( $_POST["whatsup"] ) ? $_POST["whatsup"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> What\'s the cause of the emotional pain you’re feeling deep inside? (If you don\'t know, that\'s ok) <br>
             <span class="ga-form cause">
-              <textarea rows="1" cols="35" name="cause">' . ( isset( $_POST["cause"] ) ? $cause : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="cause">' . ( isset( $_POST["cause"] ) ? $_POST["cause"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Are you aware of any addictions you may have? Could you share with us? <br>
             <span class="ga-form addictions">
-              <textarea rows="1" cols="35" name="addictions">' . ( isset( $_POST["addictions"] ) ? $addictions : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="addictions">' . ( isset( $_POST["addictions"] ) ? $_POST["addictions"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Do you struggle with self-harm? <br>
             <span class="ga-form selfharm">
-              <textarea rows="1" cols="35" name="selfharm">' . ( isset( $_POST["selfharm"] )? $selfharm : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="selfharm">' . ( isset( $_POST["selfharm"] )? $_POST["selfharm"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Have you visited your doctor recently? <br>
             <span class="ga-form doctor">
-              <textarea rows="1" cols="35" name="doctor">' . ( isset( $_POST["doctor"] ) ? $doctor : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="doctor">' . ( isset( $_POST["doctor"] ) ? $_POST["doctor"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Are you on any medications? If so, please share with us. <br>
             <span class="ga-form medication">
-              <textarea rows="1" cols="35" name="medication">' . ( isset( $_POST["medication"] ) ? $medication : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="medication">' . ( isset( $_POST["medication"] ) ? $_POST["medication"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Have you had or are you having professional counselling or psychotherapy? Please also let us know if you are currently having these sessions. <br>
             <span class="ga-form counselling">
-              <textarea rows="1" cols="35" name="counselling">' . ( isset( $_POST["counselling"] ) ? $counselling : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="counselling">' . ( isset( $_POST["counselling"] ) ? $_POST["counselling"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Who do you have around you in terms of support, family, and friends? Please describe what this all looks like to you. <br>
             <span class="ga-form support">
-              <textarea rows="1" cols="35" name="support">' . ( isset( $_POST["support"] ) ? $support : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="support">' . ( isset( $_POST["support"] ) ? $_POST["support"] : null ) . '</textarea>
             </span>
           </label>
         </div>
         <div>
           <label> Please share any other information you feel would be helpful to us in understanding your situation. <br>
             <span class="ga-form information">
-              <textarea rows="1" cols="35" name="information">' . ( isset( $_POST["information"] ) ? $information : null ) . '</textarea>
+              <textarea rows="1" cols="35" name="information">' . ( isset( $_POST["information"] ) ? $_POST["information"] : null ) . '</textarea>
             </span>
           </label>
         </div>
@@ -231,7 +231,7 @@ function html_form_code() {
         <div>
           <label> I understand and agree to the terms and conditions
             <span class="ga-form terms">
-              <input type="checkbox" name="terms">' . ( isset( $_POST["terms"] ) ? $terms : null ) . '</textarea>
+              <input type="checkbox" name="terms">' . ( isset( $_POST["terms"] ) ? $_POST["terms"] : null ) . '</textarea>
             </span>
           </label>
         </div>
@@ -244,7 +244,19 @@ function deliver_mail() {
 
   // if the submit button is clicked, send the email
 	if ( isset( $_POST['submit'] ) ) {
+
+    registration_validation(
+      $_POST["yourname"],
+      $_POST["terms"],
+      $_POST["email"],
+      $_POST["phone"],
+      $_POST["city"],
+      $_POST["country"]
+      // $yourname, $terms, $email, $phone, $city, $country
+    );
 		// sanitize form values
+    global $yourname, $streetaddress, $city, $state, $country, $email, $phone, $gender, $age, $whatsup, $cause, $addictions, $selfharm, $doctor, $medication, $counselling, $support, $information, $terms;
+
 		$yourname    = sanitize_text_field( $_POST["yourname"] );
 		$streetaddress  = sanitize_text_field( $_POST["streetaddress"] );
 		$city    = sanitize_text_field( $_POST["city"] );
@@ -269,29 +281,28 @@ function deliver_mail() {
     $terms = $_POST["terms"];
 
 
-    registration_validation($yourname, $terms, $email, $phone, $city, $country);
 
 //    $message = "test";
     $message = '
-      Name: ' . $yourname . ' <br>
-      Street Adress: ' . $streetaddress . ' <br>
-      City: ' . $city . ' <br>
-      State: ' . $state . ' <br>
-      Country: ' . $country . ' <br>
-      Email: ' . $email . ' <br>
-      Phone: ' . $phone . ' <br>
-      Gender: ' . $gender . ' <br>
-      Age: ' . $age . ' <br>
-      <br>
-      Whatsup: ' . $whatsup . ' <br>
-      Cause: ' . $cause . ' <br>
-      Addictions: ' . $addictions . ' <br>
-      Selfharm: ' . $selfharm . ' <br>
-      Doctor: ' . $doctor . ' <br>
-      Medication: ' . $medication . ' <br>
-      Counselling: ' . $counselling . ' <br>
-      Support: ' . $support . ' <br>
-      Information: ' . $information . ' <br>
+      Name: ' . $yourname . '
+      Street Adress: ' . $streetaddress . '
+      City: ' . $city . '
+      State: ' . $state . '
+      Country: ' . $country . '
+      Email: ' . $email . '
+      Phone: ' . $phone . '
+      Gender: ' . $gender . '
+      Age: ' . $age . '
+
+      Whatsup: ' . $whatsup . '>
+      Cause: ' . $cause . '
+      Addictions: ' . $addictions . '
+      Selfharm: ' . $selfharm . '
+      Doctor: ' . $doctor . '
+      Medication: ' . $medication . '
+      Counselling: ' . $counselling . '
+      Support: ' . $support . '
+      Information: ' . $information . '
     ';
 
 		// get the blog administrator's email address
@@ -299,14 +310,17 @@ function deliver_mail() {
     $subject = "New form from ylc";
 		$headers = "From: $yourname <$email>" . "\r\n";
 
+    global $reg_errors;
 		// If email has been process for sending, display a success message
-		if ( wp_mail( $to, $subject, $message, $headers ) ) {
-			echo '<div>';
-			echo '<p>Thanks for contacting me, expect a response soon.</p>';
-			echo '</div>';
-		} else {
-			echo 'An unexpected error occurred';
-		}
+    if ( 1 > count( $reg_errors->get_error_messages() ) ) {
+  		if ( wp_mail( $to, $subject, $message, $headers ) ) {
+  			echo '<div>';
+  			echo '<p>Thanks for contacting me, expect a response soon.</p>';
+  			echo '</div>';
+  		} else {
+  			echo 'An unexpected error occurred';
+  		}
+    }
 	}
   html_form_code();
 }
@@ -330,7 +344,7 @@ function registration_validation($yourname, $terms, $email, $phone, $city, $coun
   if ( is_wp_error( $reg_errors ) ) {
     foreach ( $reg_errors->get_error_messages() as $error ) {
         echo '<div>';
-        echo '<strong>ERROR</strong>:';
+        echo '<strong>ERROR</strong>: ';
         echo $error . '<br/>';
         echo '</div>';
     }
