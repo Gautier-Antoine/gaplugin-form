@@ -51,7 +51,7 @@ If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
   //   }
   // );
 
-function html_form_code() {
+function form_code() {
 
   global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
   echo '
@@ -70,15 +70,27 @@ function html_form_code() {
       .terms input{
       	width: auto !important;
       }
+      div.error, div.success {
+      	padding: 5px;
+      	background-color: rgb(200,0,0);
+      	width:auto;
+      	border-radius: 3px;
+      	border: 1px solid white;
+      }
+      div.success {
+      	background-color: rgb(0,200,0);
+      }
     </style>
   ';
   echo '
-    <p>We encourage you to take the time to share with us some outline information that will help us to understand your situation and respond back to you.
-    Please try to avoid giving just \'yes\' or \'no\' answers.
-    This is an opportunity to share with us so that we understand.
-    We\'re listening and taking you seriously!</p>
-    <p>* denotes a required field</p>
-    <p>Please read the terms and conditions before reaching out to us.</p>
+
+    <p>Our initial understanding of your situation depends on how much you are prepared to share with us. Please share as if you were explaining to someone who does not know you and has no information on your situation. This helps us to understand your situation a bit better so that we can communicate with you as relevantly and helpfully as we can.</p>
+
+    <p>We encourage you to take the time to share with us some outline information that will help us to understand your situation and respond back to you. Please try to avoid giving just \'yes\' or \'no\' answers. This is an opportunity to share with us so that we understand. We\'re listening and taking you seriously!</p>
+    <p><strong>*</strong> denotes a required field</p>
+
+    <p>Please read the <a href="https://yourlifecounts.org/terms-reaching-out/" target="_blank">terms and conditions</a> before reaching out to us.</p>
+
 
     <form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">
         <h2>Name</h2>
@@ -246,7 +258,7 @@ function html_form_code() {
     </form>
   ';
 }
-function deliver_mail() {
+function send_mail() {
 
 
   global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
@@ -264,7 +276,7 @@ function deliver_mail() {
   // if the submit button is clicked, send the email
 	if ( isset( $_POST['submit'] ) ) {
 
-    registration_validation(
+    validation_form(
       $_POST["yourname"],
       $_POST["terms"],
       $_POST["email"],
@@ -344,26 +356,28 @@ function deliver_mail() {
 
 		// get the blog administrator's email address
 		$to = get_option( 'admin_email' );
-    $subject = "New form from ylc from $yourname";
+    $subject = "New form from ylc from $yourname <$email>";
 		$headers = "From: $yourname <$email>" . "\r\n";
 
     global $reg_errors;
 		// If email has been process for sending, display a success message
     if ( 1 > count( $reg_errors->get_error_messages() ) ) {
   		if ( wp_mail( $to, $subject, $message, $headers ) ) {
-  			echo '<div>';
+  			echo '<div class="success">';
   			echo '<p>Thanks for contacting me, expect a response soon.</p>';
   			echo '</div>';
   		} else {
+        echo '<div class="error">';
   			echo 'An unexpected error occurred';
+  			echo '</div>';
   		}
     }
 	}
-  html_form_code();
+  form_code();
 }
 
 
-function registration_validation($yourname, $terms, $email, $phone, $city, $country){
+function validation_form($yourname, $terms, $email, $phone, $city, $country){
   global $reg_errors;
   $reg_errors = new WP_Error;
   if ( empty( $terms ) ){
@@ -379,10 +393,10 @@ function registration_validation($yourname, $terms, $email, $phone, $city, $coun
     $reg_errors->add( 'email_invalid', 'Email is not valid' );
   }
   if ( is_wp_error( $reg_errors ) ) {
+    //see if !empty errors
     foreach ( $reg_errors->get_error_messages() as $error ) {
-        echo '<div>';
-        echo '<strong>ERROR</strong>: ';
-        echo $error . '<br/>';
+        echo '<div class="error">';
+        echo '<strong>ERROR</strong>: ' . $error . '<br/>';
         echo '</div>';
     }
   }
@@ -391,10 +405,10 @@ function registration_validation($yourname, $terms, $email, $phone, $city, $coun
 
 function form_shortcode() {
 	ob_start();
-	deliver_mail();
+	send_mail();
 //	html_form_code();
 
 	return ob_get_clean();
 }
 
-add_shortcode( 'sitepoint_contact_form', 'form_shortcode' );
+add_shortcode( 'ylc_contact_form', 'form_shortcode' );
