@@ -19,37 +19,37 @@ You should have received a copy of the GNU General Public License along with Dar
 If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-  // defined('ABSPATH') or die('You cannot enter');
-  // add_filter(
-  //   'rest_authentication_errors',
-  //   function( $result ) {
-  //     if ( true === $result || is_wp_error( $result ) ) {
-  //         return $result;
-  //     }
-  //     if ( ! is_user_logged_in() ) {
-  //         return new WP_Error(
-  //             'rest_not_logged_in',
-  //             __( 'You are not currently logged in', 'form-text' ),
-  //             array( 'status' => 401 )
-  //         );
-  //     }
-  //     return $result;
-  //   }
-  // );
-  // if (!class_exists('GAPlugin\AdminPage')){
-  //   require_once 'includes/AdminPage.php';
-  // }
-  // require_once 'includes/Form.php';
-  //
-  //
-  // register_uninstall_hook( __FILE__, ['GAPlugin\Form', 'removeOptions']);
-  //
-  // add_action(
-  //   'init',
-  //   function () {
-  //     GAPlugin\Form::register();
-  //   }
-  // );
+  defined('ABSPATH') or die('You cannot enter');
+  add_filter(
+    'rest_authentication_errors',
+    function( $result ) {
+      if ( true === $result || is_wp_error( $result ) ) {
+          return $result;
+      }
+      if ( ! is_user_logged_in() ) {
+          return new WP_Error(
+              'rest_not_logged_in',
+              __( 'You are not currently logged in', 'form-text' ),
+              array( 'status' => 401 )
+          );
+      }
+      return $result;
+    }
+  );
+  if (!class_exists('GAPlugin\AdminPage')){
+    require_once 'includes/AdminPage.php';
+  }
+  require_once 'includes/Form.php';
+
+
+  register_uninstall_hook( __FILE__, ['GAPlugin\Form', 'removeOptions']);
+
+  add_action(
+    'init',
+    function () {
+      GAPlugin\Form::register();
+    }
+  );
 
 function form_code() {
 
@@ -155,14 +155,14 @@ function form_code() {
           <label> Gender <br>
             <span class="ga-form gender">
               <select name="gender" id="gender">
-                <option value="notanswered" ' . ( ($_POST['gender'] === "notanswered") ? "selected" : null ) . '>Prefer Not to answer</option>
-                <option value="male" ' . ( ($_POST['gender'] === "male") ? "selected" : null ) . '>Male</option>
-                <option value="female" ' . ( ($_POST['gender'] === "female") ? "selected" : null ) . '>Female</option>
-                <option value="transgender" ' . ( ($_POST['gender'] === "transgender") ? "selected" : null ) . '>Trans Gender</option>
-                <option value="genderqueer" ' . ( ($_POST['gender'] === "genderqueer") ? "selected" : null ) . '>Genderqueer</option>
-                <option value="genderless" ' . ( ($_POST['gender'] === "genderless") ? "selected" : null ) . '>Genderless</option>
-                <option value="nonbinary" ' . ( ($_POST['gender'] === "nonbinary") ? "selected" : null ) . '>Non Binary</option>
-                <option value="other" ' . ( ($_POST['gender'] === "other") ? "selected" : null ) . '>Other</option>
+                <option value="notanswered" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "notanswered") ? "selected" : null ) . '>Prefer Not to answer</option>
+                <option value="male" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "male") ? "selected" : null ) . '>Male</option>
+                <option value="female" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "female") ? "selected" : null ) . '>Female</option>
+                <option value="transgender" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "transgender") ? "selected" : null ) . '>Trans Gender</option>
+                <option value="genderqueer" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "genderqueer") ? "selected" : null ) . '>Genderqueer</option>
+                <option value="genderless" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "genderless") ? "selected" : null ) . '>Genderless</option>
+                <option value="nonbinary" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "nonbinary") ? "selected" : null ) . '>Non Binary</option>
+                <option value="other" ' . ( isset($_POST['gender']) && ($_POST['gender'] === "other") ? "selected" : null ) . '>Other</option>
               </select>
             </span>
           </label>
@@ -170,7 +170,7 @@ function form_code() {
         <div>
           <label> Age Range (e.g. 20-30) <br>
             <span class="ga-form age">
-              <input type="text" name="age" pattern="[a-zA-Z0-9 ]+" value="' . ( isset( $_POST['age'] ) ? $_POST['age'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
+              <input type="text" name="age" pattern="[a-zA-Z0-9- ]+" value="' . ( isset( $_POST['age'] ) ? $_POST['age'] : null ) . '" size="40" class="validates-as-required" aria-required="true" aria-invalid="false">
             </span>
           </label>
         </div>
@@ -259,7 +259,6 @@ function form_code() {
   ';
 }
 function send_mail() {
-
 
   global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
 
