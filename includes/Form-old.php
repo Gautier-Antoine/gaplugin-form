@@ -56,47 +56,16 @@ class Form extends AdminPage {
         add_option( 'list_fields_form', static::$list );
         update_option( 'list_fields_form', static::$list );
       }
-      if (!empty(get_option( 'my_option_name' ))){
-       static::$options = get_option( 'my_option_name' );
-     } else {
-       static::$options = get_option( 'list_fields_form' );
-     }
   }
 
   public static function register () {
       add_action('wp_enqueue_scripts', [static::class, 'registerPublicScripts']);
       add_action('admin_enqueue_scripts', [static::class, 'AdminScripts']);
-      add_action('admin_init', [static::class, 'checkOptionList']);
       add_action('admin_init', [static::class, 'registerSettings']);
+      add_action('admin_init', [static::class, 'checkOptionList']);
       add_action('admin_menu', [static::class, 'addMenu']);
       add_shortcode(static::PAGE . '-nav', [static::class, 'ShortcodeNav']);
       load_plugin_textdomain(static::LANGUAGE, false, static::FOLDER . '/languages/' );
-  }
-  private static $options;
-  public static function render () {
-      // Set class property
-      if (!empty(get_option( 'my_option_name' ))){
-       static::$options = get_option( 'my_option_name' );
-     } else {
-       static::$options = get_option( 'list_fields_form' );
-     }
-     ?>
-      <div class="wrap">
-         <?php //screen_icon(); ?>
-          <h1><?= _e('Navigation ', static::LANGUAGE) . ucfirst(static::PAGE) ?></h1>
-          <form action="options.php" method="post">
-              <?php
-              settings_fields(static::PAGE . static::EXTENSION);
-              do_settings_sections(static::PAGE . static::EXTENSION . 'admin');
-              submit_button();
-              // When submit do
-              // if (static::$update_list != get_option( 'list_fields_form')) {
-              //   update_option( 'list_fields_form', static::$update_list );
-              // }
-              ?>
-          </form>
-        </div>
-      <?php
   }
 
   public static function registerSettingsText () {
@@ -108,20 +77,20 @@ class Form extends AdminPage {
   }
 
   public static function registerSettings () {
-        // $info = get_option('list_fields_form');
+        $info = get_option('list_fields_form');
+        add_settings_section(
+          static::PAGE . static::EXTENSION . '_section',
+          __( 'Parameters', static::LANGUAGE ),
+          [static::class, 'registerSettingsText'],
+          static::PAGE . static::EXTENSION
+        );
+        static::getExtraSettings();
         register_setting(
             static::PAGE . static::EXTENSION, // Option group
             'my_option_name', // Option name
             [static::class, 'sanitize'] // Sanitize
         );
-        add_settings_section(
-          static::PAGE . static::EXTENSION . '_section',
-          __( 'Parameters', static::LANGUAGE ),
-          [static::class, 'registerSettingsText'],
-          static::PAGE . static::EXTENSION . 'admin'
-        );
-        static::getExtraSettings();
-        foreach (static::$options as $name){
+        foreach ($info as $name){
 
             $class = strtolower($name['name']);
             $title = static::PAGE . static::EXTENSION . '_' . $class;
@@ -137,7 +106,7 @@ class Form extends AdminPage {
               $title,
               $name['name'],
               [static::class, 'addPageFunction'],
-              static::PAGE . static::EXTENSION . 'admin',
+              static::PAGE . static::EXTENSION,
               static::PAGE . static::EXTENSION . '_section',
               [
                 'name' => $class,
@@ -147,12 +116,56 @@ class Form extends AdminPage {
                 'question' => $name['question']
               ]
             );
+          /*
+            $class = strtolower($name['name']);
+            $title = static::PAGE . static::EXTENSION . '_' . $class;
+            register_setting(
+              static::PAGE . static::EXTENSION,
+              static::PAGE . '-' . $class// ,
+              // add function check list to update []
+            );
+            add_settings_field(
+              $title,
+              $name['name'],
+              [static::class, 'addPageFunction'],
+              static::PAGE . static::EXTENSION,
+              static::PAGE . static::EXTENSION . '_section',
+              [
+                // 'label for' => 'test-label' . $name['name'],
+                // 'name' => 'test' . $name['name'],
+                // 'value' => [
+                  'class' => $class,
+                  'required' => $name['required'],
+                  'selected' => $name['selected'],
+                  'type' => $name['type'],
+                  'question' => $name['question']
+                // ]
+              ]
+            );
+            */
         }
-        static::addButton(); // do empty addPageFunction([]);
-  }
 
+
+        // foreach ($info as $name){
+            // register_setting(
+            //   static::PAGE . static::EXTENSION,
+            //   static::PAGE . '-' . 'updated_list_for_form'
+            // );
+
+        // foreach ($info as $name){
+        //     $class = strtolower($name['name']);
+        //     $title = static::PAGE . static::EXTENSION . '_' . $class;
+        //
+        // }
+        static::addButton();
+        // if onclick add a row
+        // var_dump(static::$update_list);
+
+
+  }
   //edit to save one option
   public function sanitize($input) {
+
     $new_input = array();
         if( isset( $input['name'] ) )
             $new_input['name'] = absint( $input['name'] );
@@ -166,8 +179,48 @@ class Form extends AdminPage {
             // 'required' => $name['required'],
             // 'selected' => $name['selected'],
         return $new_input;
+    //
+    // if (static::$update_list !== get_option( 'list_fields_form')) {
+    //   update_option( 'list_fields_form', static::$update_list );
+    // }
+    // var_dump(static::$update_list);
+    //return $lll;
+       // $new_input = array();
+       // if( isset( $input['id_number'] ) )
+       //     $new_input['id_number'] = absint( $input['id_number'] );
+       //
+       // if( isset( $input['title'] ) )
+       //     $new_input['title'] = sanitize_text_field( $input['title'] );
+       //
+       // return $new_input;
    }
 
+  public static function addButton(){
+      $text = __('Click to add an option', static::LANGUAGE);
+      register_setting(
+        static::PAGE . static::EXTENSION,
+        static::PAGE . '-gap-showtext'
+      );
+      add_settings_field(
+        static::PAGE . static::EXTENSION . '_gap_showtext',
+        $text,
+        [static::class, 'showButton'],
+        static::PAGE . static::EXTENSION,
+        static::PAGE . static::EXTENSION . '_section'
+      );
+  }
+
+  public static function showButton() {
+      ?>
+        <input
+          type="button"
+          name="<?= static::PAGE . '-gap-showbutton' ?>"
+          class="button show-button"
+          title="<?php printf(__('Add', static::LANGUAGE)) ?>"
+          value="<?php printf(__('Add', static::LANGUAGE)) ?>"
+        >
+      <?php
+  }
 
   public static function addPageFunction($args) {
       ?>
@@ -201,6 +254,23 @@ class Form extends AdminPage {
       <?php
   }
 
+  public static function render () {
+
+      ?>
+        <h1><?= _e('Navigation ', static::LANGUAGE) . ucfirst(static::PAGE) ?></h1>
+        <form action="options.php" method="post">
+            <?php
+            settings_fields(static::PAGE . static::EXTENSION);
+            do_settings_sections(static::PAGE . static::EXTENSION);
+            submit_button();
+            // When submit do
+            // if (static::$update_list != get_option( 'list_fields_form')) {
+            //   update_option( 'list_fields_form', static::$update_list );
+            // }
+            ?>
+        </form>
+      <?php
+  }
 
   public static function ShortcodeNav() {
       echo '<div class="' . static::PAGE . '">';
@@ -232,36 +302,4 @@ class Form extends AdminPage {
         }
       echo '</div>';
   }
-
-
-
-    public static function addButton(){
-        $text = __('Click to add an option', static::LANGUAGE);
-        register_setting(
-          static::PAGE . static::EXTENSION,
-          static::PAGE . '-gap-showtext'
-        );
-        add_settings_field(
-          static::PAGE . static::EXTENSION . '_gap_showtext',
-          $text,
-          [static::class, 'showButton'],
-          static::PAGE . static::EXTENSION . 'admin',
-          static::PAGE . static::EXTENSION . '_section'
-        );
-    }
-
-    public static function showButton() {
-        ?>
-          <input
-            type="button"
-            name="<?= static::PAGE . '-gap-showbutton' ?>"
-            class="button show-button"
-            title="<?php printf(__('Add', static::LANGUAGE)) ?>"
-            value="<?php printf(__('Add', static::LANGUAGE)) ?>"
-          >
-        <?php
-    }
-
-
-// end class
 }

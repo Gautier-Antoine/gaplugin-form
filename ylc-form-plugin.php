@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Form-GA
+Plugin Name: YLC-Form
 Plugin URI: https://github.com/Pepite61/gaplugin-form
 Description: Form for the website
 Version: 0.00.01
@@ -18,53 +18,11 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with DarkMode-GA.
 If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
-
-  defined('ABSPATH') or die('You cannot enter');
-  add_filter(
-    'rest_authentication_errors',
-    function( $result ) {
-      if ( true === $result || is_wp_error( $result ) ) {
-          return $result;
-      }
-      if ( ! is_user_logged_in() ) {
-          return new WP_Error(
-              'rest_not_logged_in',
-              __( 'You are not currently logged in', 'form-text' ),
-              array( 'status' => 401 )
-          );
-      }
-      return $result;
-    }
-  );
-  if (!class_exists('GAPlugin\AdminPage')){
-    require_once 'includes/AdminPage.php';
-  }
-  require_once 'includes/Form.php';
-
-// register_activation_hook( __FILE__, ['GAPlugin\Form', 'activate']);
-// register_deactivation_hook( __FILE__, ['GAPlugin\Form', 'deactivate']);
-// activate & deactivate {
-//   flush_rewrite_rules();
-// }
-if( is_admin() ){
-	require 'includes/test.php';
-	new CustomSettingsPage();
-}
-
 if( is_admin() ){
 	require 'includes/Form-YLC.php';
 	new YLCForm();
 }
 
-
-  register_uninstall_hook( __FILE__, ['GAPlugin\Form', 'removeOptions']);
-
-  add_action(
-    'init',
-    function () {
-      GAPlugin\Form::register();
-    }
-  );
 
 function form_code() {
 

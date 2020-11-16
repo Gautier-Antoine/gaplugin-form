@@ -44,7 +44,9 @@ class AdminPage {
   /**
   * @var array list of social medias
   */
-  public static $list =[];
+  public static $list = [];
+  // public function __construct() {
+  // }
   public static function registerSettingsText () {}
   /**
   * @param array $args list from registerSettings()
@@ -54,6 +56,10 @@ class AdminPage {
   public static function getExtraSettings () {}
   public static function removeExtraOptions() {}
   public static function removeOptions(){
+
+    // if (! defined ('WP_UNINSTALL_PLUGIN')) {
+    //   die;
+    // }
     foreach (static::$list as $option) {
       delete_option(static::PAGE . '-' . strtolower($option['name']));
     }
@@ -72,9 +78,12 @@ class AdminPage {
 
     public static function register () {
         add_action('wp_enqueue_scripts', [static::class, 'registerPublicScripts']);
-        add_action('admin_enqueue_scripts', [static::class, 'AdminScripts']);
-        add_action('admin_init', [static::class, 'registerSettings']);
-        add_action('admin_menu', [static::class, 'addMenu']);
+
+        // if ( is_admin() ){ // admin actions
+          add_action('admin_enqueue_scripts', [static::class, 'AdminScripts']);
+          add_action('admin_init', [static::class, 'registerSettings']);
+          add_action('admin_menu', [static::class, 'addMenu']);
+        // }
         add_shortcode(static::PAGE . '-nav', [static::class, 'ShortcodeNav']);
         load_plugin_textdomain(static::LANGUAGE, false, static::FOLDER . '/languages/' );
     }
@@ -147,7 +156,8 @@ class AdminPage {
         ?>
         <h1><?= _e('Navigation ', static::LANGUAGE) . ucfirst(static::PAGE) ?></h1>
         <form action="options.php" method="post">
-            <?php settings_fields(static::PAGE . static::EXTENSION);
+            <?php
+            settings_fields(static::PAGE . static::EXTENSION);
             do_settings_sections(static::PAGE . static::EXTENSION);
             submit_button();
             ?>
