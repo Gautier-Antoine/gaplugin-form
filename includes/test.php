@@ -2,6 +2,7 @@
 
 // wp-content/themes/YourTheme/CustomSettingsPage.php
 // http://regularcoder.com/create-wordpress-settings-page-for-custom-options/
+// https://deliciousbrains.com/create-wordpress-plugin-settings-page/
 
 class CustomSettingsPage
 {
@@ -55,7 +56,7 @@ class CustomSettingsPage
         3 => ['name' => 'state', 'type' => 'textfield', 'question' => 'Province / State', 'required' => 'off', 'selected' => 'off'],
         4 => ['name' => 'country', 'type' => 'textfield', 'question' => 'Country', 'required' => 'on', 'selected' => 'off'],
         5 => ['name' => 'email', 'type' => 'email', 'question' => 'E-Mail Address', 'required' => 'on', 'selected' => 'on'],
-        6 => ['name' => 'phone', 'type' => 'phone', 'question' => 'Telephone Number', 'required' => 'on', 'selected' => 'off'],
+        6 => ['name' => 'phone', 'type' => 'tel', 'question' => 'Telephone Number', 'required' => 'on', 'selected' => 'off'],
         7 => ['name' => 'option1', 'type' => 'textarea', 'question' => 'What’s up? Please tell us.', 'required' => 'off', 'selected' => 'off'],
         8 => ['name' => 'option2', 'type' => 'textarea', 'question' => 'What’s the cause of the emotional pain you’re feeling deep inside? (If you don’t know, that’s ok)', 'required' => 'off', 'selected' => 'off'],
         9 => ['name' => 'option3', 'type' => 'textarea', 'question' => 'Are you aware of any addictions you may have? Could you share with us?', 'required' => 'off', 'selected' => 'off'],
@@ -292,7 +293,7 @@ class CustomSettingsPage
              <select name="custom_list[<?= $args['id'] ?>][type]" id="type">
                <option value="textfield" <?= (($args['type'] === 'textfield') ? "selected" : null ) ?> >TextField</option>
                <option value="textarea" <?= (($args['type'] === 'textarea') ? "selected" : null ) ?> >TextArea</option>
-               <option value="phone" <?= (($args['type'] === 'phone') ? "selected" : null ) ?> >Phone</option>
+               <option value="tel" <?= (($args['type'] === 'tel') ? "selected" : null ) ?> >Phone</option>
                <option value="email" <?= (($args['type'] === 'email') ? "selected" : null ) ?> >Email</option>
                <option value="checkbox" <?= (($args['type'] === 'checkbox') ? "selected" : null ) ?> >CheckBox</option>
              </select>

@@ -57,6 +57,9 @@ if( is_admin() ){
 }
 
 
+require 'includes/Form-YLC-ShortCode.php';
+new YLCFormSC();
+
   register_uninstall_hook( __FILE__, ['GAPlugin\Form', 'removeOptions']);
 
   add_action(
@@ -65,7 +68,7 @@ if( is_admin() ){
       GAPlugin\Form::register();
     }
   );
-
+/*
 function form_code() {
 
   global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
@@ -441,3 +444,4 @@ function form_shortcode() {
 }
 
 add_shortcode( 'ylc_contact_form', 'form_shortcode' );
+*/
