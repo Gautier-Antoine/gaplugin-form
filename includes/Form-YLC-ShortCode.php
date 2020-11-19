@@ -2,19 +2,25 @@
 
 class  YLCFormSC
 {
+  /**
+   * Constructor
+   */
   public function __construct()
   {
     add_shortcode( 'YLC-Form', array( $this, 'form_shortcode' ) );
   }
-
+  /**
+   * Function to call the email
+   */
   function form_shortcode() {
   	ob_start();
   	$this->send_mail();
   	return ob_get_clean();
   }
-
+  /**
+   * Processing the Form
+   */
   function send_mail() {
-    // if the submit button is clicked, send the email
   	if ( isset( $_POST['submit'] ) ) {
       $options = get_option('ylc_form_list');
       global $reg_errors;
@@ -57,7 +63,7 @@ class  YLCFormSC
           }
         }
       }
-
+      // Create the message
       $message = '';
       foreach ($options as $key => $name){
         // create message
@@ -76,8 +82,9 @@ class  YLCFormSC
       $subject = "New form from ylc from $ yourname <$ email>";
   		$headers = "From: $ yourname <$ email>" . "\r\n";
 
+
       global $reg_errors;
-  		// If email has been process for sending, display a success message
+  		// Check If email has been process
       if ( 1 > count( $reg_errors->get_error_messages() ) ) {
     		if ( wp_mail( $to, $subject, $message, $headers ) ) {
     			echo '<div class="success">';
@@ -90,20 +97,12 @@ class  YLCFormSC
     		}
       }
   	}
+    // Call the Form
     $this->form_code();
   }
 
-
-
-
-
-
-
-
-
   function form_code() {
-
-    // global $whatsup_q, $cause_q, $addictions_q, $selfharm_q, $doctor_q, $medication_q, $counselling_q, $support_q, $information_q;
+    // Style for the form
     echo '
       <style>
         div {
@@ -136,13 +135,14 @@ class  YLCFormSC
         }
       </style>
     ';
-
+    // Start of the form
     echo '
       <form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">
     ';
 
     $options = get_option('ylc_form_list');
     // var_dump($options);
+    // Loop array in the get_options
     foreach ($options as $key => $name){
       // var_dump($name);
       // var_dump($key);
@@ -238,3 +238,4 @@ class  YLCFormSC
       </form>
     ';
   }
+}

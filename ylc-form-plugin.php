@@ -23,6 +23,24 @@ if( is_admin() ){
 	new YLCForm();
 }
 
-
 require 'includes/Form-YLC-ShortCode.php';
 new YLCFormSC();
+
+
+
+
+
+
+
+//
+//
+// make if !class_exists(page admin){
+// 	create page admin
+// }
+//
+// Check sanitization
+//
+// See activate_plugin && deactivate
+//
+// See add row, add form
+//

@@ -5,11 +5,6 @@
 
 class YLCForm
 {
-    /**
-     * Array of custom settings/options
-     */
-    private static $options;
-
       const
         /**
         * @var string name of the page
@@ -39,10 +34,18 @@ class YLCForm
         /**
         * @var string name for the admin page
         */
-        ADMINPAGE = 'ylc-admin-page';
+        ADMINPAGE = 'ylc-admin-page',
 
+        /**
+        * @var string name for the admin page
+        */
+        OPTION = 'ylc_form_list';
+
+    /**
+    * @var array Basic array for the options in the admin menu
+    */
     private static $list = [
-      // Add delete for options
+      // Add && delete for options
         0 => [
           'name' => 'intro',
           'type' => 'html',
@@ -88,6 +91,10 @@ class YLCForm
         18 => ['name' => 'terms', 'type' => 'checkbox', 'question' => 'Terms and agreement', 'required' => 'on', 'selected' => 'on'],
         19 => ['name' => 'copy', 'type' => 'checkbox', 'question' => 'Would you like to receive a copy of this form by email', 'required' => 'off', 'selected' => 'on']
     ];
+    /**
+     * Array of custom settings/options
+     */
+    private static $options;
 
     /**
      * Constructor
@@ -96,14 +103,19 @@ class YLCForm
     {
         add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
+        if (empty(get_option(static::OPTION))) {
+          add_option( static::OPTION, static::$list);
+        }
+        static::$options = get_option( static::OPTION );
     }
 
     /**
      * Add settings page
-     * The page will appear in "Settings" menu dropdown
+     * Creating a AdminPage in the DashBoard and a SubMenuPage
      */
     public function add_settings_page()
     {
+          // if the ADMINPAGE doesn't exist, create it
           if ( empty ( $GLOBALS['admin_page_hooks'][static::ADMINPAGE] ) ){
               add_menu_page(
                   'YLC-Plugins',
@@ -115,6 +127,7 @@ class YLCForm
                   30
               );
           }
+          // Add the SubMenuPage for the Plugin
           add_submenu_page(
             static::ADMINPAGE,
             ucfirst(static::PAGE),
@@ -131,11 +144,7 @@ class YLCForm
     public static function create_admin_page()
     {
         // Set class property
-        if (!empty(get_option('ylc_form_list'))){
-          static::$options = get_option( 'ylc_form_list' );
-        } else {
-          static::$options = static::$list;
-        }
+        // static::$options = get_option( static::OPTION );
         ?>
         <div class="wrap">
             <h2><?= _e('Navigation ', static::LANGUAGE) . ucfirst(static::PAGE) ?></h2>
@@ -156,7 +165,7 @@ class YLCForm
     public function page_init() {
         register_setting(
             'ylc_list_group', // Option group
-            'ylc_form_list', // Option name
+            static::OPTION, // Option name
             array( $this, 'sanitize_list' ) // Sanitize
         );
 
@@ -166,20 +175,31 @@ class YLCForm
             array($this, 'ylc_list_section' ), // Callback
             'ylc-list-page' // Page
         );
-        if (!empty(get_option( 'ylc_form_list'))){
-          static::$options = get_option( 'ylc_form_list' );
-        } else {
-          static::$options = static::$list;
-        }
+        // Add titles for options form
+        add_settings_field(
+          static::PAGE . static::EXTENSION . '_titles',
+          '',
+          [static::class, 'addPageTitle'],
+          'ylc-list-page', // Page
+          'ylc_list_section',
+          [
+            'name' => 'Name',
+            'required' => 'Require',
+            'selected' => 'Show',
+            'type' => 'Type',
+            'question' => 'Question',
+            'id' => 'ID'
+          ]
+        );
         $i = 0;
         foreach (static::$options as $key => $name) {
           $class = strtolower($name['name']);
           $title = static::PAGE . static::EXTENSION . '_' . $class;
           if (empty($name['selected'])) {
-            $name['selected'] = 'off-test';
+            $name['selected'] = 'off';
           }
           if (empty($name['required'])) {
-            $name['required'] = 'off-test';
+            $name['required'] = 'off';
           }
           add_settings_field(
             $title,
@@ -227,17 +247,42 @@ class YLCForm
         // // var_dump($sanitized_input);
         // return $sanitized_input;
     }
+
+
     /**
-     * Custom settings section text
+     * Custom settings section text (Add information about the AdminMenuPage)
      */
     public function ylc_list_section() {
       echo 'shortcode = [YLC-' . static::PAGE . ']';
     }
+
+
+        /**
+         * HTML for Titles in menu
+         * @param array $args is the (name, required, selected, type, question, id)
+         */
+         public static function addPageTitle($args) {
+             ?>
+                 <h2><?= $args['selected'] ?></h2>
+               </td><td>
+                 <h2><?= $args['required'] ?></h2>
+               </td><td>
+                 <h2><?= $args['type'] ?></h2>
+               </td><td>
+                 <h2><?= $args['question'] ?></h2>
+               </td><td>
+                 <h2><?= $args['name'] ?></h2>
+               </td><td>
+                 <h2 style="visibility: hidden;"><?= $args['id'] ?></h2>
+             <?php
+         }
+
+
+
     /**
      * HTML for custom setting 1 input
+     * @param array $args is the (name, required, selected, type, question, id)
      */
-
-
      public static function addPageFunction($args) {
        // var_dump($args);
        // if html checkboxes = hidden
@@ -275,7 +320,9 @@ class YLCForm
          <?php
      }
 
-
+     /**
+      * HTML to show in the admin Page
+      */
      public static function YLC_Plugin_admin_page(){
        ?>
        <div class="wrap">
