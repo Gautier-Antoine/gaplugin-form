@@ -41,15 +41,8 @@ add_filter(
   }
 );
 
-
-// create setting with an option { TEXT FOOTER, select to, select colors mail, text header}
-// finish inputs admin, make validation
-//  check color picker: https://code.tutsplus.com/articles/how-to-use-wordpress-color-picker-api--wp-33067
-// in Mail, create template
-
-
 /// change to FormGAP/AutoLoader();
-require 'includes/autoloader2.php';
+require 'includes/autoloader.php';
 
 if( is_admin() ){
 	// Create Admin Panel
@@ -67,19 +60,19 @@ if ( class_exists( 'FormGAP\GAPFormSC' ) ) {
 /**
  * Activation hook
  */
-function formActivation() {
+function gapformActivation() {
   if ( class_exists( 'FormGAP\GAPForm' ) ) {
     FormGAP\GAPForm::Activation();
   }
 }
-register_activation_hook( __FILE__, 'formActivation' );
+register_activation_hook( __FILE__, 'gapformActivation' );
 
 /**
  * Deactivation hook
  */
-function formDeactivation() {
+function gapformDeactivation() {
   if ( class_exists( 'FormGAP\GAPForm' ) ) {
     FormGAP\GAPForm::Deactivation();
   }
 }
-register_deactivation_hook( __FILE__, 'formDeactivation' );
+register_deactivation_hook( __FILE__, 'gapformDeactivation' );

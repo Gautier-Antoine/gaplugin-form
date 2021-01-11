@@ -19,7 +19,7 @@ table th {
 .main table {
 	margin-bottom: 10px;
 }
-tr:nth-child(1) ::before{
+tr:nth-child(1) ::before, tr:nth-child(2) ::before{
 	display: none;
 }
 th::before {
@@ -33,7 +33,9 @@ th::before {
 	background-color: #777;
 	border-radius: 3px;
 }
-
+.form-table td:last-child {
+	display: none;
+}
 
 nav.form {
 	margin-top: 10px;
@@ -58,4 +60,36 @@ nav.form a.active{
 nav.form a:hover{
 	background-color: #777 !important;
 	color: #eee !important;
+}
+
+@media screen and (max-width: 782px) {
+  .form-table th, .form-table tr {
+  	text-align: center;
+  }
+  .form-table td {
+  	padding: 5px 10px;
+  }
+  .form-table th {
+  	background-color: #777;
+  	border-radius: 5px 5px 0px 0px;
+  	padding: 10px;
+  }
+  .form-table tr{
+  	border-top: 15px solid #FFF;
+  }
+  .form-table th::before{
+  	padding: 0;
+  	background-color: rgba(0,0,0,0);
+  }
+	tr:nth-child(2) td {
+		background-color: #999;
+		margin-bottom: 2px;
+	}
+	tr:nth-child(2) td:first-of-type {
+		border-radius: 10px 10px 0px 0px;
+	}
+	tr:nth-child(2) td:nth-child(6) {
+		border-radius: 0px 0px 10px 10px;
+	}
+	tr:nth-child(2) th, tr:nth-child(2) td:nth-child(7) {display:none;}
 }

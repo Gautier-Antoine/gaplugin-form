@@ -6,13 +6,19 @@
 class  GAPMail extends BaseConst
 {
 
-  protected static $headerEmail = '
+  /**
+   * HTML for header of the email
+   * @param string hexdec $color principal
+   * @param string hexdec $colordark is a darker color
+   */
+  protected static function getHeaderEmail( $color, $colordark ) {
+    $html = '
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html xmlns:v="urn:schemas-microsoft-com:vml">
-        	<head>
-        		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-        		<meta label_for="viewport" content="width=device-width; initial-scale=1.0; maximal-scale=1.0;">
-        		<link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
+          <head>
+            <meta http-equiv="content-type" content="text/html; charset=utf-8">
+            <meta label_for="viewport" content="width=device-width; initial-scale=1.0; maximal-scale=1.0;">
+            <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
             <style type="text/css">
               @font-face {
                 font-family: "Raleway";
@@ -27,44 +33,76 @@ class  GAPMail extends BaseConst
               span {font-size: 0.7em; vertical-align: middle;}
               body {font-family: Railway, Arial, sans-serif;}
               td a {color: #FFF;}
-              footer a {color: #4BBCB5;}
+              footer a {color: ' . $colordark . ';}
             </style>
-        	</head>
-        	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-        <!-- #1e98fe -->
-        		<table bgcolor="#FFF" width="100%" border="0" cellpadding="0" cellspacing="0">
-        			<tbody>
-        			<tr>
-        				<td>
-        					<div>
-        						<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
-        							<tbody>
-        							<tr>
-        								<td height="10" style="font-size:10px; line-height:10px;">
-        									&nbsp;
-        								</td>
-        							</tr>
-        							<tr>
-        								<td>
-        									<table width="100%" border="0" cellpadding="0" cellspacing="0">
-        										<tbody>
-        												<tr>
-        													<td align="center" style="text-align:center; font-size:1.3em; color:#4BBCB5; mso-line-height-rule: exactly; line-height:2em;">
-                                    <h2>Your Life Counts <span style="font-size: 0.7em; vertical-align: middle;"><i>Form</i></span></h2>
+          </head>
+          <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+            <table bgcolor="#FFF" width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tbody>
+              <tr>
+                <td>
+                  <div>
+                    <table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tbody>
+                      <tr>
+                        <td height="10" style="font-size:10px; line-height:10px;">
+                          &nbsp;
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                  <td align="center" style="text-align:center; font-size:1.3em; color: ' . $color . '; mso-line-height-rule: exactly; line-height:2em;">
+                                    <h2>' . get_bloginfo( 'name' ) . '
+                                    <span style="font-size: 0.7em; vertical-align: middle;"><i>Form</i></span></h2>
         													</td>
         												</tr>
         										</tbody>
-        									</table>';
-                          // blog name
-  protected static $footerEmail = '
-                          <table style="background-color: #3C4955; color: #4BBCB5;" width="100%"  align="center" border="0" cellpadding="0" cellspacing="0">
+        									</table>
+
+    ';
+    return $html;
+  }
+
+  /**
+   * HTML for header of the email
+   * @param array option answered
+   * @param string hexdec $color principal
+   * @param string hexdec $colordark is a darker color
+   */
+  protected static function getMessages ($option, $color, $colordark) {
+    $msg =
+      '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: ' . $color . '; color: ' . $colordark . '; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
+        <tbody>
+            <tr>
+              <td align="center" style="text-align: left; font-size:1.2em; color: ' . $colordark . '; mso-line-height-rule: exactly; line-height:1.6em;">
+                ' . $option['question'] . ' :<br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="text-align: left; font-size:1.2em; color:#FFF; mso-line-height-rule: exactly; line-height:1.2em;">
+                ' . $_POST[$option['label_for']] . '<br>
+              </td>
+            </tr>
+        </tbody>
+      </table>';
+      return $msg;
+  }
+
+  /**
+   * HTML for footer of the email
+   * @param string hexdec $color principal
+   * @param string hexdec $colordark is a darker color
+   */
+  protected static function getFooterEmail( $color, $colordark ) {
+    $html = '
+                          <table style="background-color: ' . $colordark . '; color: ' . $color . '; text-align: center;" width="100%"  align="center" border="0" cellpadding="0" cellspacing="0">
                             <tbody>
                                 <tr>
                                   <td align="center" width="60">
-                                    <br>
-                                    © <a href="https://yourlifecounts.org" style="color: #4bbcb5;">YourLifeCounts.org</a>
-                                    <br>
-                                    <br>
+                                    <br>© <a href="' . home_url( $path = '/', $scheme = 'https' ) . '" style="color: ' . $color . ';">' . get_bloginfo( 'name' ) . '</a><br><br>
                                   </td>
                                 </tr>
                             </tbody>
@@ -86,7 +124,12 @@ class  GAPMail extends BaseConst
         </body>
       </html>
     ';
+    return $html;
+  }
 
+  /**
+   * HTML Style for the form
+   */
   public static $FormStyle = '
     <style>
       div {
@@ -147,25 +190,5 @@ class  GAPMail extends BaseConst
       }
     </style>
   ';
-
-  public static function getMessages ($option) {
-    $msg =
-      '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #4BBCB5; color: #3C4955; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
-        <tbody>
-            <tr>
-              <td align="center" style="text-align: left; font-size:1.2em; color:#3C4955; mso-line-height-rule: exactly; line-height:1.6em;">
-                ' . $option['question'] . ' :<br>
-              </td>
-            </tr>
-            <tr>
-              <td align="center" style="text-align: left; font-size:1.2em; color:#FFF; mso-line-height-rule: exactly; line-height:1.2em;">
-                ' . $_POST[$option['label_for']] . '<br>
-              </td>
-            </tr>
-        </tbody>
-      </table>';
-      return $msg;
-  }
-
 
 }

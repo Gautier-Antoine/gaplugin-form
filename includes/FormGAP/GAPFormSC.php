@@ -76,18 +76,35 @@ class  GAPFormSC extends GAPMail
         }
       }
       // Create the message
+
+      // Get the settings
       $message = '';
+      $to = '';
+      $color = '';
+      $colordark = '';
       foreach ($options as $key => $option){
-        // create message
-        if (isset($option['hide']) && ($option['hide'] == 0) && ($option['type'] != 'html') && !empty($_POST[$option['label_for']])){
-          $message .= static::getMessages($option);
+        if ($key === 'settings') {
+          $to = $option['email_to'];
+          $color = $option['color'];
+          $colordark = $option['colordark'];
         }
       }
-      $message = static::$headerEmail . $message . static::$footerEmail;
+  		$color = ( empty( $color ) ) ? '#0071a1' : $color;
+  		$colordark = ( empty( $colordark ) ) ? '#202B34' : $colordark;
+      $to = ( empty( $to ) ) ? get_option( 'admin_email' ) : $to;
 
+      foreach ($options as $key => $option){
+        // create message
+        if (isset($option['hide']) && ($key !== 'settings') && ($option['hide'] == 0) && ($option['type'] != 'html') && !empty($_POST[$option['label_for']])){
+          $message .= static::getMessages($option, $color, $colordark);
+        }
+      }
+      $message = static::getHeaderEmail( $color, $colordark ) . $message . static::getFooterEmail( $color, $colordark );
+      echo "<pre>";
+      print_r($message);
+      echo "</pre>";
+      exit;
   		// get the blog administrator's email address
-  		// $to = get_option( 'admin_email' );
-      $to = 'help@yourlifecounts.org';
       if (isset($_POST['yourname']) && isset($_POST['email'])){
         $from_user = $_POST['yourname'] . ' <' . $_POST['email'] . '>';
       } else {
@@ -234,4 +251,3 @@ class  GAPFormSC extends GAPMail
   }
 
 }
-GAP

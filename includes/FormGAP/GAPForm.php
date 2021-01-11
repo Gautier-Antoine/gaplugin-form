@@ -22,8 +22,14 @@ class GAPForm extends BaseConst
           wp_register_script('admin_form_gap_js', plugin_dir_url( __FILE__ ) . 'admin_form_gap_js.js' );
           wp_enqueue_script('admin_form_gap_js');
         }
-    }
+        add_action( 'admin_enqueue_scripts', array( static::class, 'enqueue_color_picker' ) );
 
+    }
+    public function enqueue_color_picker( $hook_suffix ) {
+        // first check that $hook_suffix is appropriate for your admin page
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script( 'my-script-handle', plugin_dir_url( __FILE__ ) . 'colorPicker.js', array( 'wp-color-picker' ), false, true );
+    }
     /**
      * Add settings page
      * Creating a AdminPage in the DashBoard and a SubMenuPage
@@ -33,7 +39,7 @@ class GAPForm extends BaseConst
           // if the ADMINPAGE doesn't exist, create it
           if ( empty ( $GLOBALS['admin_page_hooks'][static::ADMINPAGE] ) ){
               add_menu_page(
-                  'GAP-Plugins',
+                  'GAPlugin',
                   static::MENU,
                   'manage_options',
                   static::ADMINPAGE,
@@ -137,20 +143,18 @@ class GAPForm extends BaseConst
           if ( $array == $tab ) {
             foreach ( $value as $id => $option ) {
               if ($id === 'settings') {
-                echo 'settings found in $id<br>';
-                $title = static::PAGE . static::EXTENSIONGAP'_' . $id;
+                // echo 'settings found in $id<br>';
+                $title = static::PAGE . static::EXTENSION . '_' . $id;
                 add_settings_field(
                   $title,
                   ucfirst($id),
-                  [static::class, 'newPageFunction'],
+                  [static::class, 'SettingsPageFunction'],
                   'gap-list-page', // Page
                   'gap_list_section',
                   [
                     'email_to' => ($option['email_to']) ?: false,
-                    'header_text' => ($option['header_text']) ?: false,
-                    'color1' => ($option['color1']) ?: '#000000',
-                    'color2' => ($option['color2']) ?: '#ffffff',
-                    'colortext' => ($option['colortext']) ?: '#0ef0ef',
+                    'color' => ($option['color']) ?: false,
+                    'colordark' => ($option['colordark']) ?: false,
                     'id' => $id
                   ]
                 );
@@ -221,35 +225,38 @@ class GAPForm extends BaseConst
       $i = 0;
       foreach ($input as $in => $value) {
         foreach ($value as $key => $option){
+          if ($key === 'settings') {
+            $valid_input[$in][$key]['email_to'] = sanitize_email( $option['email_to'] );
+            $valid_input[$in][$key]['color'] = sanitize_text_field( $option['color'] );
+            $valid_input[$in][$key]['colordark'] = sanitize_text_field( $option['colordark'] );
+          } else {
+            $key = $i;
+            //sanitizing the fields that doesn't change
+            $valid_input[$in][$key]['label_for'] = sanitize_text_field( $option['label_for'] );
+            $valid_input[$in][$key]['type'] = sanitize_text_field( $option['type'] );
+            $valid_input[$in][$key]['required'] = (isset($option['required'])) ? true : false;
+            $valid_input[$in][$key]['hide'] = (isset($option['hide'])) ? true : false;
 
-          $key = $i;
-          //sanitizing the fields that doesn't change
-          $valid_input[$in][$key]['label_for'] = sanitize_text_field( $option['label_for'] );
-          $valid_input[$in][$key]['type'] = sanitize_text_field( $option['type'] );
-          $valid_input[$in][$key]['required'] = (isset($option['required'])) ? true : false;
-          $valid_input[$in][$key]['hide'] = (isset($option['hide'])) ? true : false;
-
-          $valid_input[$in][$key]['id'] = sanitize_key( $key );
-          switch ( $option['type'] ) {
-            // $option['type'] where type is the key we set before in the option->'gap-form-list'
-            // all the possibilities for $option['type']: html, textfield, textarea, tel, email, checkbox
-              case 'html':
-                $valid_input[$in][$key]['question'] = wp_kses_post( $option['question'] );
-              break;
-              case 'textarea':
-                  $valid_input[$in][$key]['question'] = sanitize_textarea_field( $option['question'] );
-              break;
-              case 'textfield':
-              case 'tel':
-              case 'email':
-              case 'checkbox':
-                $valid_input[$in][$key]['question'] = sanitize_text_field( $option['question'] );
-              break;
-
-            }
-            $i = $i + 1;
-
+            $valid_input[$in][$key]['id'] = sanitize_key( $key );
+            switch ( $option['type'] ) {
+              // $option['type'] where type is the key we set before in the option->'gap-form-list'
+              // all the possibilities for $option['type']: html, textfield, textarea, tel, email, checkbox
+                case 'html':
+                  $valid_input[$in][$key]['question'] = wp_kses_post( $option['question'] );
+                break;
+                case 'textarea':
+                    $valid_input[$in][$key]['question'] = sanitize_textarea_field( $option['question'] );
+                break;
+                case 'textfield':
+                case 'tel':
+                case 'email':
+                case 'checkbox':
+                  $valid_input[$in][$key]['question'] = sanitize_text_field( $option['question'] );
+                break;
+              }
+              $i = $i + 1;
           }
+        }
       }
       // if Add is clicked
       if ($_POST['submit'] == 'Add a field') {
@@ -269,13 +276,13 @@ class GAPForm extends BaseConst
           $n = $key + 1;
         }
         $ok = $n;
-        $valid_input[$ok] = array(
-          'settings' => ['email_to' => false, 'header_text' => false, 'color1' => false, 'color2' => false, 'colortext' => false],
+        $valid_input[$ok] = [
+          'settings' => ['email_to' => false, 'color' => false, 'colordark' => false],
           0 => ['label_for' => 'yourname', 'type' => 'textfield', 'question' => 'Your Name', 'required' => 1, 'hide' => 0],
           1 => ['label_for' => 'streetaddress', 'type' => 'textfield', 'question' => 'Street Address', 'required' => 0, 'hide' => 0],
           2 => ['label_for' => 'city', 'type' => 'textfield', 'question' => 'City', 'required' => 1, 'hide' => 0],
           3 => ['label_for' => 'state', 'type' => 'textfield', 'question' => 'Province / State', 'required' => 0, 'hide' => 0]
-        );
+        ];
       }
       $output = array_replace($output, $valid_input);
       return $output;
@@ -287,7 +294,6 @@ class GAPForm extends BaseConst
      */
      public static function addPageTitle($option) {
          ?>
-         <td>
              <h2><?= $option['hide'] ?></h2>
            </td><td>
              <h2><?= $option['required'] ?></h2>
@@ -307,8 +313,6 @@ class GAPForm extends BaseConst
            </td>
            <td>
              <h2 style="visibility: hidden;"><?= $option['id'] ?></h2>
-          </td>
-        </tr>
          <?php
      }
 
@@ -317,28 +321,24 @@ class GAPForm extends BaseConst
       * HTML for custom setting 1 input
       * @param array $option is the (name, required, hide, type, question, id)
       */
-      public static function newPageFunction($option) {
+      public static function SettingsPageFunction($option) {
           $option_name = static::getOptionName();
           $tab = static::getTab();
-          // [
-          //   'color1' => ($option['color1']) ?: '#000000',
-          //   'color2' => ($option['color2']) ?: '#ffffff',
-          //   'colortext' => ($option['colortext']) ?: '#0ef0ef',
-          // ]
           ?>
-          <td>
           </td><td>
           </td><td>
-              <p>Recipient Email</p>
-              <textarea placeholder="Admin Email" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][email_to]" rows="1"><?= $option['email_to']; ?></textarea>
+
+              <p>Main Color</p>
+              <input width="100px" class="my-color-field" data-default-color="#0071a1" placeholder="#0071a1" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][color]" rows="1" value="<?= $option['color']; ?>"></input>
             </td><td>
-              <p>Text header Email</p>
-              <textarea placeholder="Blog Name" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][header_text]" rows="1" required><?= $option['header_text']; ?></textarea>
-            </td>
-            <td>
+              <p>Dark Color</p>
+              <input width="100px" class="my-color-field" data-default-color="#202B34" placeholder="#202B34" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][colordark]" rows="1" value="<?= $option['colordark']; ?>"></input>
+            </td><td>
+                <p>Recipient Email</p>
+                <input type="email" placeholder="admin@example.com" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][email_to]" rows="1" value="<?= $option['email_to']; ?>"></input>
+            </td><td>
               <input type="hidden" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][id]" value="<?= $option['id']; ?>">
             </td>
-          </tr>
           <?php
       }
 
@@ -350,13 +350,12 @@ class GAPForm extends BaseConst
          $option_name = static::getOptionName();
          $tab = static::getTab();
          ?>
-         <td>
              <input
                type="checkbox"
                class="checkbox"
                name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][hide]"
                id="<?=  $option['label_for'] ?>"
-               title="<?php printf(__('To ask for %1$s', static::LANGUAGE), $option['label_for']) ?>"
+               title="<?php printf(__('Hide %1$s', static::LANGUAGE), $option['label_for']) ?>"
                <?= ($option['hide'] == 1) ? ' checked' : '' ?>
              >
            </td><td>
@@ -364,7 +363,7 @@ class GAPForm extends BaseConst
                type="checkbox"
                class="checkbox"
                name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][required]"
-               title="<?php printf(__('To require the %1$s', static::LANGUAGE), $option['label_for']) ?>"
+               title="<?php printf(__('Require %1$s', static::LANGUAGE), $option['label_for']) ?>"
                <?=
                 // if ($option['required'] === 'on') {echo ' checked';} // get_option(
                  ($option['required'] == 1) ? ' checked' : ''
@@ -398,8 +397,6 @@ class GAPForm extends BaseConst
            </td>
            <td>
              <input type="hidden" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][id]" value="<?= $option['id']; ?>">
-           </td>
-         </tr>
          <?php
      }
 
@@ -416,20 +413,23 @@ class GAPForm extends BaseConst
       */
      public function gap_list_section() {
        $tab = static::getTab();
-       echo 'shortcode = [YLC-' . static::PAGE . ' form=' . $tab . ']';
+       echo 'shortcode = [GAP-' . static::PAGE . ' form=' . $tab . ']<br>' .
+       __('If you don\'t select an email recipient, the email will be sent to the admin email from your settings.', static::LANGUAGE) . '<br>' .
+       __('You can select the colors for the email.', static::LANGUAGE) . '<br>';
+
      }
 
      /**
       * HTML to show in the admin Page
       */
-     protected static function GAP_Plugin_admin_page() {
+     public static function GAP_Plugin_admin_page() {
        ?>
        <div class="wrap">
          <h2><?=
-          __('Welcome to GAP-Plugin Page', static::LANGUAGE) . '<h2>
-            <p>' .
-            __('You\'ll find the different sections in the tabs', static::LANGUAGE) . '</p><br />';
-           ?>
+          __('Welcome to GAPlugin Page', static::LANGUAGE) . '<h2>
+          <p>' .
+          __('You\'ll find the different sections in the tabs', static::LANGUAGE) . '</p><br />';
+       ?>
        </div>
        <?php
      }

@@ -1,7 +1,7 @@
 <?php
-spl_autoload_register('myAutoLoader2');
+spl_autoload_register('GAP_Form_AutoLoader');
 
-function myAutoLoader2($class) {
+function GAP_Form_AutoLoader($class) {
   $path = "";
   $extension = ".php";
   $fullPath = $path . $class . $extension;
