@@ -14,6 +14,7 @@ class  GAPFormSC extends GAPMail
     $option_name = static::getOptionName();
     add_shortcode( 'GAP-Form', array( static::class, 'form_shortcode' ) );
   }
+
   /**
    * Function to call the email
   * @param array $atts is the array for this form
@@ -100,10 +101,6 @@ class  GAPFormSC extends GAPMail
         }
       }
       $message = static::getHeaderEmail( $color, $colordark ) . $message . static::getFooterEmail( $color, $colordark );
-      echo "<pre>";
-      print_r($message);
-      echo "</pre>";
-      exit;
   		// get the blog administrator's email address
       if (isset($_POST['yourname']) && isset($_POST['email'])){
         $from_user = $_POST['yourname'] . ' <' . $_POST['email'] . '>';
