@@ -103,15 +103,17 @@ class  GAPFormSC extends GAPMail
       $message = static::getHeaderEmail( $color, $colordark ) . $message . static::getFooterEmail( $color, $colordark );
   		// get the blog administrator's email address
       if (isset($_POST['yourname']) && isset($_POST['email'])){
-        $from_user = $_POST['yourname'] . ' <' . $_POST['email'] . '>';
+        $postName = sanitize_text_field( $_POST['yourname'] );
+        $postEmail = sanitize_email( $_POST['email'] );;
+        $from_user = $postName . ' <' . $postEmail . '>';
       } else {
         $from_user = esc_url( $_SERVER['REQUEST_URI'] );
       }
       $subject = 'New form from GAP: ' . $from_user;
       // $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
   		$headers = array('Content-Type: text/html; charset=UTF-8; From: GAP-Form <' . $to . '> ');
-
-
+      // echo '<pre>' . $message . '</pre';
+      // exit;
       global $reg_errors;
   		// Check If email has been process
       if ( 1 > count( $reg_errors->get_error_messages() ) ) {
@@ -147,20 +149,34 @@ class  GAPFormSC extends GAPMail
     foreach ($options as $key => $option){
       // var_dump($option);
       // var_dump($key);
-      if (!$option['hide'] == 1 ) {
+
+
+
+      if ( !$option['hide'] == 1 ) {
+        if (isset($_POST[$option['label_for']])) {
+          if ($option['type'] === 'textfield'){
+            $sanitizedLabel = sanitize_text_field( $_POST[$option['label_for']] );
+          }
+          if ($option['type'] === 'textarea'){
+            $sanitizedLabel = sanitize_textarea_field( $_POST[$option['label_for']] );
+          }
+          if ($option['type'] === 'email'){
+            $sanitizedLabel = sanitize_email( $_POST[$option['label_for']] );
+          }
+        }
       // if (!isset($option['hide'])) {
         // all the values for $option['type']: html, textfield, textarea, tel, email, checkbox
         if ($option['type'] === 'textfield'){
           echo '
             <div>
-              <label> ' . $option['question'] . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
+              <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . $option['label_for'] . '">
+                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
                   <input
                     type="text"
                     name="' . $option['label_for'] . '"
                     pattern="[a-zA-Z0-9 ]+"
-                    value="' . ( isset( $_POST[$option['label_for']] ) ? $_POST[$option['label_for']] : null ) . '"
+                    value="' . ( isset( $sanitizedLabel ) ? esc_attr( $sanitizedLabel ) : null ) . '"
                     size="40"
                     class="validates-as-required"
                     aria-required="true"
@@ -175,15 +191,15 @@ class  GAPFormSC extends GAPMail
         if ($option['type'] === 'textarea'){
           echo '
             <div>
-              <label> ' . $option['question'] . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
+              <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . $option['label_for'] . '">
+                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
                   <textarea
                     rows="1"
                     cols="35"
                     name="' . $option['label_for'] . '"
                     ' . ( isset($option['required']) && ($option['required'] == 1 ) ? ' required' : null ) . '
-                  >' . ( isset( $_POST[$option['label_for']] ) ? $_POST[$option['label_for']] : null ) . '</textarea>
+                  >' . ( isset( $sanitizedLabel ) ? esc_attr( $sanitizedLabel ) : null ) . '</textarea>
                 </span>
               </label>
             </div>
@@ -197,13 +213,13 @@ class  GAPFormSC extends GAPMail
           }
           echo '
             <div>
-              <label> ' . $option['question'] . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
+              <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . $option['label_for'] . '">
+                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
                   <input
-                    type="' . $option['type'] . '"
-                    name="' . $option['label_for'] . '"
-                    value="' . ( isset( $_POST[$option['label_for']] ) ? $_POST[$option['label_for']] : null ) . '"
+                    type="' . esc_attr( $option['type'] ) . '"
+                    name="' . esc_attr( $option['label_for'] ) . '"
+                    value="' . ( isset( $sanitizedLabel ) ? esc_attr( $sanitizedLabel ) : null ) . '"
                     pattern="' . $pattern . '"
                     size="40"
                     class="validates-as-required"
@@ -221,21 +237,22 @@ class  GAPFormSC extends GAPMail
             <div>
               <label>
               <br>
-                <span class="gap-form ' . $option['label_for'] . '">
+                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
                   <input
                     type="checkbox"
-                    name="' . $option['label_for'] . '" ' . ( isset($_POST[$option['label_for']]) ? "checked" : null ) . '
+                    name="' . $option['label_for'] . '"
+                    ' . ( isset( $sanitizedLabel ) ? 'checked' : null ) . '
                     ' . ( isset($option['required']) && ($option['required'] == 1 ) ? ' required' : null ) . '
                   >
                 </span>
-                 ' . $option['question'] . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
+                 ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               </label>
             </div>
           ';
         }
         if ($option['type'] === 'html'){
           echo '
-            <div class="' . $option['label_for'] . '">' . $option['question'] . '</div>
+            <div class="' . esc_attr( $option['label_for'] ) . '">' . wp_kses_post( $option['question'] ) . '</div>
           ';
         }
       }

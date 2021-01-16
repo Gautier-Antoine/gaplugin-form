@@ -13,18 +13,18 @@ class  GAPMail extends BaseConst
    */
   protected static function getHeaderEmail( $color, $colordark ) {
     $html = '
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "' . esc_url( "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" ) . '">
         <html xmlns:v="urn:schemas-microsoft-com:vml">
           <head>
             <meta http-equiv="content-type" content="text/html; charset=utf-8">
             <meta label_for="viewport" content="width=device-width; initial-scale=1.0; maximal-scale=1.0;">
-            <link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
+            <link href="' . esc_url( "https://fonts.googleapis.com/css?family=Teko") . '" rel="stylesheet">
             <style type="text/css">
               @font-face {
                 font-family: "Raleway";
                 font-style: normal;
                 font-weight: 100;
-                src: url(https://fonts.gstatic.com/s/raleway/v18/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvao7CFPrEHJA.woff2) format("woff2");
+                src: url(' . esc_url( "https://fonts.gstatic.com/s/raleway/v18/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvao7CFPrEHJA.woff2" ) . ') format("woff2");
                 unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
               }
               a {text-decoration: none !important;}
@@ -33,7 +33,7 @@ class  GAPMail extends BaseConst
               span {font-size: 0.7em; vertical-align: middle;}
               body {font-family: Railway, Arial, sans-serif;}
               td a {color: #FFF;}
-              footer a {color: ' . $colordark . ';}
+              footer a {color: ' . esc_attr( $colordark ) . ';}
             </style>
           </head>
           <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -54,8 +54,8 @@ class  GAPMail extends BaseConst
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tbody>
                                 <tr>
-                                  <td align="center" style="text-align:center; font-size:1.3em; color: ' . $color . '; mso-line-height-rule: exactly; line-height:2em;">
-                                    <h2>' . get_bloginfo( 'name' ) . '
+                                  <td align="center" style="text-align:center; font-size:1.3em; color: ' . esc_attr( $color ) . '; mso-line-height-rule: exactly; line-height:2em;">
+                                    <h2>' . esc_attr( get_bloginfo( 'name' ) ) . '
                                     <span style="font-size: 0.7em; vertical-align: middle;"><i>Form</i></span></h2>
         													</td>
         												</tr>
@@ -74,16 +74,16 @@ class  GAPMail extends BaseConst
    */
   protected static function getMessages ($option, $color, $colordark) {
     $msg =
-      '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: ' . $color . '; color: ' . $colordark . '; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
+      '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: ' . esc_attr( $color ) . '; color: ' . esc_attr( $colordark ) . '; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
         <tbody>
             <tr>
-              <td align="center" style="text-align: left; font-size:1.2em; color: ' . $colordark . '; mso-line-height-rule: exactly; line-height:1.6em;">
-                ' . $option['question'] . ' :<br>
+              <td align="center" style="text-align: left; font-size:1.2em; color: ' . esc_attr( $colordark ) . '; mso-line-height-rule: exactly; line-height:1.6em;">
+                ' . esc_attr( $option['question'] ) . ' :<br>
               </td>
             </tr>
             <tr>
               <td align="center" style="text-align: left; font-size:1.2em; color:#FFF; mso-line-height-rule: exactly; line-height:1.2em;">
-                ' . $_POST[$option['label_for']] . '<br>
+                ' . esc_attr( $_POST[$option['label_for']] ) . '<br>
               </td>
             </tr>
         </tbody>
@@ -98,11 +98,11 @@ class  GAPMail extends BaseConst
    */
   protected static function getFooterEmail( $color, $colordark ) {
     $html = '
-                          <table style="background-color: ' . $colordark . '; color: ' . $color . '; text-align: center;" width="100%"  align="center" border="0" cellpadding="0" cellspacing="0">
+                          <table style="background-color: ' . esc_attr( $colordark ) . '; color: ' . esc_attr( $color ) . '; text-align: center;" width="100%"  align="center" border="0" cellpadding="0" cellspacing="0">
                             <tbody>
                                 <tr>
                                   <td align="center" width="60">
-                                    <br>© <a href="' . home_url( $path = '/', $scheme = 'https' ) . '" style="color: ' . $color . ';">' . get_bloginfo( 'name' ) . '</a><br><br>
+                                    <br>© <a href="' . home_url( $path = '/', $scheme = 'https' ) . '" style="color: ' . esc_attr( $color ) . ';">' . esc_attr( get_bloginfo( 'name' ) ) . '</a><br><br>
                                   </td>
                                 </tr>
                             </tbody>

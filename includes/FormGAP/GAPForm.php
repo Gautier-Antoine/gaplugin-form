@@ -15,21 +15,30 @@ class GAPForm extends BaseConst
         static::checkOptionsCreated();
         add_action( 'admin_menu', array( static::class, 'add_settings_page' ) );
         add_action( 'admin_init', array( static::class, 'page_init' ) );
-        if(strpos($_SERVER['REQUEST_URI'], static::ADMINPAGE . '-' . strtolower(static::PAGE)) !== false) {
-          wp_register_style('admin_form_gap', plugin_dir_url( __FILE__ ) . 'admin_form_gap.css' );
-          wp_enqueue_style('admin_form_gap');
-          wp_enqueue_script( 'jquery-ui-sortable' );
-          wp_register_script('admin_form_gap_js', plugin_dir_url( __FILE__ ) . 'admin_form_gap_js.js' );
-          wp_enqueue_script('admin_form_gap_js');
-        }
+
+        add_action( 'admin_enqueue_scripts', array( static::class, 'admin_form' ) );
         add_action( 'admin_enqueue_scripts', array( static::class, 'enqueue_color_picker' ) );
 
     }
     /**
      * Add color picker script
      */
+    public function admin_form( $hook_suffix ) {
+      if ( strpos( $_SERVER['REQUEST_URI'], static::ADMINPAGE . '-' . strtolower( static::PAGE ) ) !== false ) {
+        // // check error mail admin_enqueue_scripts
+        // wp_register_style('admin_form_gap );
+        wp_enqueue_style('admin_form_gap', plugin_dir_url( __FILE__ ) . 'admin_form_gap.css');
+        wp_enqueue_script( 'jquery-ui-sortable' );
+        // wp_register_script('admin_form_gap_js');
+        wp_enqueue_script('admin_form_gap_js', plugin_dir_url( __FILE__ ) . 'admin_form_gap_js.js' );
+      }
+    }
+    /**
+     * Add color picker script
+     */
     public function enqueue_color_picker( $hook_suffix ) {
         // first check that $hook_suffix is appropriate for your admin page
+        // admin
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script( 'my-script-handle', plugin_dir_url( __FILE__ ) . 'colorPicker.js', array( 'wp-color-picker' ), false, true );
     }
@@ -84,21 +93,21 @@ class GAPForm extends BaseConst
               }
               if ( !isset( $options[$tab])){
                 if ( !empty( $options ) ) {
-                  $adress = admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . $key;
-                  echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$adress.'">';
+                  $adress = admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . esc_attr( $key );
+                  echo '<META HTTP-EQUIV=REFRESH CONTENT="1; ' . esc_attr( $adress ) . '">';
                 }
                 if ($key === null) {
                   echo 'empty array';
                     update_option($option_name, static::$list);
-                    $adress = admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . $key;
-                    echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$adress.'">';
+                    $adress = admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . esc_attr( $key );
+                    echo '<META HTTP-EQUIV=REFRESH CONTENT="1; ' . esc_attr( $adress ) . '">';
                 }
               }
               if ( $countKeys > 1 ){
                 echo '<nav class="form">';
                   foreach (get_option($option_name) as $key => $value){
                     $active = ($tab == $key) ? 'active' : '';
-                    echo '<a href="' . admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . $key . '" class="' . $active . '">Form ' . $key . '</a>';
+                    echo '<a href="' . admin_url() . 'admin.php?page=gap-admin-page-form&tab=' . esc_attr( $key ) . '" class="' . esc_attr( $active ) . '">Form ' . esc_attr( $key ) . '</a>';
                   }
                 echo '</nav>';
               }
@@ -106,9 +115,9 @@ class GAPForm extends BaseConst
             <form method="post" action="options.php" class="main">
             <?php
                 submit_button( 'Add a form', 'primary small', 'submit', false );
-                echo ' <input type="hidden" name="tab" value="' . $tab . '"> ';
+                echo ' <input type="hidden" name="tab" value="' . esc_attr( $tab ) . '"> ';
                 submit_button('Delete this form', 'delete small', 'submit', false, array(
-                  'onclick' => 'return confirm("Are you sure you want to delete the form-' . $tab .'?");'
+                  'onclick' => 'return confirm("Are you sure you want to delete the form-' . esc_attr( $tab ) .'?");'
                 ));
 
                 settings_fields( 'gap_list_group' );
@@ -135,7 +144,7 @@ class GAPForm extends BaseConst
         );
         add_settings_section(
             'gap_list_section', // ID
-            'GAP FORM ' . $tab, // Title
+            'GAP FORM ' . esc_attr( $tab ), // Title
             array(static::class, 'gap_list_section' ), // Callback
             'gap-list-page' // Page
         );
@@ -155,9 +164,9 @@ class GAPForm extends BaseConst
                   'gap-list-page', // Page
                   'gap_list_section',
                   [
-                    'email_to' => ($option['email_to']) ?: false,
-                    'color' => ($option['color']) ?: false,
-                    'colordark' => ($option['colordark']) ?: false,
+                    'email_to' => (esc_attr( $option['email_to'] )) ?: false,
+                    'color' => (esc_attr( $option['color'] )) ?: false,
+                    'colordark' => (esc_attr( $option['colordark'] )) ?: false,
                     'id' => $id
                   ]
                 );
@@ -177,10 +186,10 @@ class GAPForm extends BaseConst
                   ]
                 );
               } else {
-                $title = static::PAGE . static::EXTENSION . '_' . strtolower($option['label_for']);
+                $title = static::PAGE . static::EXTENSION . '_' . strtolower(esc_attr( $option['label_for'] ));
                 add_settings_field(
                   $title,
-                  $option['label_for'],
+                  esc_attr( $option['label_for'] ),
                   [static::class, 'addPageFunction'],
                   'gap-list-page', // Page
                   'gap_list_section',
@@ -297,25 +306,25 @@ class GAPForm extends BaseConst
      */
      public static function addPageTitle($option) {
          ?>
-             <h2><?= $option['hide'] ?></h2>
+             <h2><?= esc_attr( $option['hide'] ) ?></h2>
            </td><td>
-             <h2><?= $option['required'] ?></h2>
+             <h2><?= esc_attr( $option['required'] ) ?></h2>
            </td><td>
-             <h2><?= $option['type'] ?></h2>
+             <h2><?= esc_attr( $option['type'] ) ?></h2>
            </td><td>
-             <h2><?= $option['question'] ?></h2>
+             <h2><?= esc_attr( $option['question'] ) ?></h2>
            </td><td>
-             <h2><?= $option['label_for'] ?></h2>
+             <h2><?= esc_attr( $option['label_for'] ) ?></h2>
            </td>
            <td>
              <form>
              <?php
-                 echo '<input type="hidden" name="remove" value="' . $option['id'] . '">';
+                 echo '<input type="hidden" name="remove" value="' . esc_attr( $option['id'] ) . '">';
              ?>
              </form>
            </td>
            <td>
-             <h2 style="visibility: hidden;"><?= $option['id'] ?></h2>
+             <h2 style="visibility: hidden;"><?= esc_attr( $option['id'] ) ?></h2>
          <?php
      }
 
@@ -332,15 +341,15 @@ class GAPForm extends BaseConst
           </td><td>
 
               <p>Main Color</p>
-              <input width="100px" class="my-color-field" data-default-color="#0071a1" placeholder="#0071a1" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][color]" rows="1" value="<?= $option['color']; ?>"></input>
+              <input width="100px" class="my-color-field" data-default-color="#0071a1" placeholder="#0071a1" name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][color]" rows="1" value="<?= esc_attr( $option['color'] ); ?>"></input>
             </td><td>
               <p>Dark Color</p>
-              <input width="100px" class="my-color-field" data-default-color="#202B34" placeholder="#202B34" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][colordark]" rows="1" value="<?= $option['colordark']; ?>"></input>
+              <input width="100px" class="my-color-field" data-default-color="#202B34" placeholder="#202B34" name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][colordark]" rows="1" value="<?= esc_attr( $option['colordark'] ); ?>"></input>
             </td><td>
                 <p>Recipient Email</p>
-                <input type="email" placeholder="admin@example.com" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][email_to]" rows="1" value="<?= $option['email_to']; ?>"></input>
+                <input type="email" placeholder="admin@example.com" name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][email_to]" rows="1" value="<?= esc_attr( $option['email_to'] ); ?>"></input>
             </td><td>
-              <input type="hidden" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][id]" value="<?= $option['id']; ?>">
+              <input type="hidden" name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][id]" value="<?= esc_attr( $option['id'] ); ?>">
             </td>
           <?php
       }
@@ -349,31 +358,28 @@ class GAPForm extends BaseConst
      * HTML for custom setting 1 input
      * @param array $option is the (name, required, hide, type, question, id)
      */
-     public static function addPageFunction($option) {
+     public static function addPageFunction( $option ) {
          $option_name = static::getOptionName();
          $tab = static::getTab();
          ?>
              <input
                type="checkbox"
                class="checkbox"
-               name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][hide]"
-               id="<?=  $option['label_for'] ?>"
-               title="<?php printf(__('Hide %1$s', static::LANGUAGE), $option['label_for']) ?>"
+               name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][hide]"
+               id="<?=  esc_attr( $option['label_for'] ) ?>"
+               title="<?php printf(__('Hide %1$s', static::LANGUAGE), esc_attr( $option['label_for'] ) ) ?>"
                <?= ($option['hide'] == 1) ? ' checked' : '' ?>
              >
            </td><td>
              <input
                type="checkbox"
                class="checkbox"
-               name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][required]"
-               title="<?php printf(__('Require %1$s', static::LANGUAGE), $option['label_for']) ?>"
-               <?=
-                // if ($option['required'] === 'on') {echo ' checked';} // get_option(
-                 ($option['required'] == 1) ? ' checked' : ''
-              ?>
+               name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][required]"
+               title="<?php printf(__('Require %1$s', static::LANGUAGE), esc_attr( $option['label_for'] ) ) ?>"
+               <?= ($option['required'] == 1) ? ' checked' : '' ?>
              >
            </td><td>
-             <select name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][type]" id="type">
+             <select name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][type]" id="type">
                <option value="textfield" <?= (($option['type'] === 'textfield') ? "selected" : null ) ?> >TextField</option>
                <option value="textarea" <?= (($option['type'] === 'textarea') ? "selected" : null ) ?> >TextArea</option>
                <option value="tel" <?= (($option['type'] === 'tel') ? "selected" : null ) ?> >Phone</option>
@@ -382,16 +388,16 @@ class GAPForm extends BaseConst
                <option value="html" <?= (($option['type'] === 'html') ? "selected" : null ) ?> >HTML</option>
              </select>
            </td><td>
-             <textarea name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][question]" rows="1"><?= $option['question']; ?></textarea>
+             <textarea name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][question]" rows="1"><?= htmlspecialchars( $option['question'] ); ?></textarea>
            </td><td>
-             <textarea name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][label_for]" rows="1" required><?= $option['label_for']; ?></textarea>
+             <textarea name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][label_for]" rows="1" required><?= esc_textarea( $option['label_for'] ); ?></textarea>
            </td>
            <td>
              <form method="post" action="options.php">
              <?php
                  settings_fields( 'gap_list_group' );
-                 echo '<input type="hidden" name="remove" value="' . $option['id'] . '">';
-                 echo '<input type="hidden" name="tab" value="' . $tab . '">';
+                 echo '<input type="hidden" name="remove" value="' . esc_attr( $option['id'] ) . '">';
+                 echo '<input type="hidden" name="tab" value="' . esc_attr( $tab ) . '">';
                  submit_button('Delete', 'delete small', 'submit', false, array(
                    'onclick' => 'return confirm("Are you sure you want to delete this entry?");'
                  ));
@@ -399,7 +405,7 @@ class GAPForm extends BaseConst
              </form>
            </td>
            <td>
-             <input type="hidden" name="<?= $option_name ?>[<?= $tab ?>][<?= $option['id'] ?>][id]" value="<?= $option['id']; ?>">
+             <input type="hidden" name="<?= esc_attr( $option_name ) ?>[<?= esc_attr( $tab ) ?>][<?= esc_attr( $option['id'] ) ?>][id]" value="<?= esc_attr( $option['id'] ); ?>">
          <?php
      }
 
@@ -407,7 +413,7 @@ class GAPForm extends BaseConst
       * Find which form with the tab
       */
      protected static function getTab() {
-         $tab = isset($_GET['tab']) ? $_GET['tab'] : '';
+         $tab = isset($_GET['tab'])  ? filter_var($_GET['tab'], FILTER_SANITIZE_NUMBER_INT) : '';
          return $tab;
      }
 
@@ -416,7 +422,7 @@ class GAPForm extends BaseConst
       */
      public function gap_list_section() {
        $tab = static::getTab();
-       echo 'shortcode = [GAP-' . static::PAGE . ' form=' . $tab . ']<br>' .
+       echo 'shortcode = [GAP-' . static::PAGE . ' form=' . esc_attr( $tab ) . ']<br>' .
        __('If you don\'t select an email recipient, the email will be sent to the admin email from your settings.', static::LANGUAGE) . '<br>' .
        __('You can select the colors for the email.', static::LANGUAGE) . '<br>';
 

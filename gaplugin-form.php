@@ -5,7 +5,7 @@
 /*
 Plugin Name: GAP-Form
 Plugin URI: https://github.com/Gautier-Antoine/GAP-form-plugin
-Description: Form for the website GAP
+Description: Form manager on your website
 Version: 0.00.02
 Requires at least: 5.2
 Tested up to: 5.6
@@ -14,13 +14,13 @@ Author: GAUTIER Antoine
 Author URI: gautierantoine.com
 Text Domain: form-text
 Domain Path: /languages
-// License:     GPL v3
-// License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
-// Form-GA is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
-// Form-GA is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License along with DarkMode-GA.
-// If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
+License:     GPL v3
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
+Form-GA is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+Form-GA is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with DarkMode-GA.
+If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
 defined('ABSPATH') or die('You cannot enter');
