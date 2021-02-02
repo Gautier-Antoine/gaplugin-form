@@ -18,7 +18,6 @@ class  GAPMail extends BaseConst
           <head>
             <meta http-equiv="content-type" content="text/html; charset=utf-8">
             <meta label_for="viewport" content="width=device-width; initial-scale=1.0; maximal-scale=1.0;">
-            <link href="' . esc_url( "https://fonts.googleapis.com/css?family=Teko") . '" rel="stylesheet">
             <style type="text/css">
               @font-face {
                 font-family: "Raleway";
