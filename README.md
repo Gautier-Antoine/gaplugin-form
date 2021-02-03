@@ -15,7 +15,7 @@ A form manager
 
 == Description ==
 
-After installing the plugin. You'll have a new menu in your admin page "GAP-Plugin".
+After installing the plugin. You'll have a new menu in your admin page "GAPlugin".
 It will have a "form" page.
 
 
