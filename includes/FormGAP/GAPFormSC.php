@@ -56,7 +56,7 @@ class  GAPFormSC extends GAPMail
       if ( is_wp_error( $reg_errors ) ) {
         //see if !empty errors
         foreach ( $reg_errors->get_error_messages() as $error ) {
-            echo '<div class="error">';
+            echo '<div class="error gap-form">';
             echo '<strong>ERROR</strong>: ' . $error . '<br/>';
             echo '</div>';
         }
@@ -100,6 +100,24 @@ class  GAPFormSC extends GAPMail
           $message .= static::getMessages($option, $color, $colordark);
         }
       }
+      $url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+
+      $message .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: ' . esc_attr( $color ) . '; color: ' . esc_attr( $colordark ) . '; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
+        <tbody>
+            <tr>
+              <td align="center" style="text-align: left; font-size:1.2em; color: ' . esc_attr( $colordark ) . '; mso-line-height-rule: exactly; line-height:1.6em;">
+                Form filled on this url :<br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="text-align: left; font-size:1.2em; color:#FFF; mso-line-height-rule: exactly; line-height:1.2em;">
+                ' . esc_url( $url ) . '<br>
+              </td>
+            </tr>
+        </tbody>
+      </table>';
+      
       $message = static::getHeaderEmail( $color, $colordark ) . $message . static::getFooterEmail( $color, $colordark );
   		// get the blog administrator's email address
       if (isset($_POST['yourname']) && isset($_POST['email'])){
@@ -118,11 +136,11 @@ class  GAPFormSC extends GAPMail
   		// Check If email has been process
       if ( 1 > count( $reg_errors->get_error_messages() ) ) {
     		if ( wp_mail( $to, $subject, $message, $headers ) ) { // wp_mail( $to, $subject, $message, $headers = '', $attachments = array() )
-    			echo '<div class="success">';
-    			echo '<p><strong>SUCCESS</strong>: Thanks for contacting us, expect a response soon.</p>';
+    			echo '<div class="success gap-form">';
+    			echo '<strong>SUCCESS</strong>: Thanks for contacting us, expect a response soon.';
     			echo '</div>';
     		} else {
-          echo '<div class="error">';
+          echo '<div class="error gap-form">';
     			echo '<strong>ERROR</strong>: An unexpected error occurred';
     			echo '</div>';
     		}
@@ -140,7 +158,7 @@ class  GAPFormSC extends GAPMail
     echo static::$FormStyle;
     // Start of the form
     echo '
-      <form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">
+      <form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post" class="gap-form">
     ';
     $option_name = static::getOptionName();
     // Access the part from the form array with $tab
@@ -168,10 +186,9 @@ class  GAPFormSC extends GAPMail
         // all the values for $option['type']: html, textfield, textarea, tel, email, checkbox
         if ($option['type'] === 'textfield'){
           echo '
-            <div>
               <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
+                <span class="' . esc_attr( $option['label_for'] ) . '">
                   <input
                     type="text"
                     name="' . $option['label_for'] . '"
@@ -185,15 +202,13 @@ class  GAPFormSC extends GAPMail
                   >
                 </span>
               </label>
-            </div>
           ';
         }
         if ($option['type'] === 'textarea'){
           echo '
-            <div>
               <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
+                <span class="' . esc_attr( $option['label_for'] ) . '">
                   <textarea
                     rows="1"
                     cols="35"
@@ -202,7 +217,6 @@ class  GAPFormSC extends GAPMail
                   >' . ( isset( $sanitizedLabel ) ? esc_attr( $sanitizedLabel ) : null ) . '</textarea>
                 </span>
               </label>
-            </div>
           ';
         }
         if ($option['type'] === 'tel' || $option['type'] === 'email'){
@@ -212,10 +226,9 @@ class  GAPFormSC extends GAPMail
             $pattern = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$';
           }
           echo '
-            <div>
               <label> ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               <br>
-                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
+                <span class="' . esc_attr( $option['label_for'] ) . '">
                   <input
                     type="' . esc_attr( $option['type'] ) . '"
                     name="' . esc_attr( $option['label_for'] ) . '"
@@ -229,15 +242,13 @@ class  GAPFormSC extends GAPMail
                   >
                 </span>
               </label>
-            </div>
           ';
         }
         if ($option['type'] === 'checkbox'){
           echo '
-            <div>
               <label>
               <br>
-                <span class="gap-form ' . esc_attr( $option['label_for'] ) . '">
+                <span class="' . esc_attr( $option['label_for'] ) . '">
                   <input
                     type="checkbox"
                     name="' . $option['label_for'] . '"
@@ -247,7 +258,6 @@ class  GAPFormSC extends GAPMail
                 </span>
                  ' . esc_attr( $option['question'] ) . ( isset($option['required']) && ($option['required'] == 1 ) ? ' <strong">*</strong>' : null ) . '
               </label>
-            </div>
           ';
         }
         if ($option['type'] === 'html'){
@@ -259,7 +269,7 @@ class  GAPFormSC extends GAPMail
     }
     echo '
           <br>
-          <input type="submit" name="submit" value="Send"/>
+          <input type="submit" name="submit" value="Send" class="gap-form"/>
       </form>
     ';
   }

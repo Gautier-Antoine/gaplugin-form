@@ -129,64 +129,126 @@ class  GAPMail extends BaseConst
   /**
    * HTML Style for the form
    */
+
+
+   // add form.css
+   // edit css form in dropmag
   public static $FormStyle = '
     <style>
-      div {
-          margin-bottom:2px;
-      }
-      input{
-          margin-bottom:4px;
-      }
-      .ga-form textarea, .ga-form input, .ga-form select {
-      	width: 80%;
-      	background-color: rgba(230,230,230,1);
-      	padding: 5px;
-      }
-      .terms input{
-      	width: auto !important;
-      }
-      div.error, div.success {
-      	padding: 5px;
-      	background-color: rgb(200,0,0);
-      	width:auto;
-      	border-radius: 4px;
-      	border: 1px solid white;
-        color: white;
-      }
-      div.success {
-      	background-color: rgb(0,200,0);
-      }
-      div.success p {
-      	margin-bottom: 0;
-      }
-      input[type="tel"] {
-      	color: #8a8a8a;
-      	background-color: #ffffff;
-        border-color: #e3e0dc;
-      }
-      input[type="tel"] {
-      	-webkit-appearance: none;
-      	outline: none;
-      	resize: none;
-      	padding: 0.45em 0.5em;
-      	border:1px solid #e3e0dc;
-          -webkit-border-radius: 2px;
-          -moz-border-radius: 2px;
-          border-radius: 2px;
-      	-webkit-box-sizing: border-box;
-      	   -moz-box-sizing: border-box;
-      	        box-sizing: border-box;
-      	-webkit-transition: all ease .3s;
-      	   -moz-transition: all ease .3s;
-      	    -ms-transition: all ease .3s;
-      	     -o-transition: all ease .3s;
-      	        transition: all ease .3s;
-      }
-      input[type="tel"]:focus {
-      	color: #232a34;
-      	background-color: #ffffff;
-        border-color: #776c6c;
-      }
+
+/*
+form.gap-form .terms input{
+	width: auto !important;
+}
+*/
+
+form.gap-form {
+	margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+form.gap-form textarea, form.gap-form input, form.gap-form select {
+	width: 90%;
+  background-color: rgba(250,250,250,.9);
+  color: rgb(var(--primary-color));
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+form.gap-form label {
+  /*! color: rgb(var(--link-color)); */
+  color: black;
+  display: block;
+  width:100%;
+}
+
+div.error.gap-form, div.success.gap-form {
+  padding: 10px;
+/*
+  background-color: rgb(200,50,50);
+*/
+  width: calc(100% - 20px);
+  border-radius: 4px;
+  border: 1px solid black;
+  color: black;
+}
+div.success.gap-form {
+  background-color: rgb(150,250,150);
+/*
+  background-color: rgb(var(--bg-color)) !important;
+  color: rgb(var(--secondary-color));
+*/
+}
+div.error.gap-form {
+  background-color: rgb(250,150,150);
+/*
+  background-color: rgb(var(--secondary-color)) !important;
+  color: rgb(var(--bg-color));
+*/
+}
+
+
+
+input.gap-form[type="submit"] {
+  padding: 5px 50px;
+  border-radius: 5px !important;
+  font-weight: 900;
+/*
+  font-family: \'Permanent Marker\', cursive;
+	background-color: rgb(var(--primary-color));
+	color: rgb(var(--font-color));
+  border: 3px solid rgb(var(--font-color));
+*/
+  background-color: rgba(0,0,0,0.3);
+	color: white;
+  border: 3px solid white;
+}
+input.gap-form[type="submit"]:hover {
+/*
+  background-color: rgb(var(--primary-color));
+  color: rgb(var(--link-color));
+  border: 3px solid rgb(var(--link-color));
+*/
+  background-color: rgba(0,0,0,0.5);
+}
+input.gap-form[type="submit"]:focus {
+/*         background-color: rgba(var(--heading-color));
+  color: rgb(var(--link-color));
+	border: 3px solid rgb(var(--font-color)); */
+  background-color: rgba(255,255,255,0.3);
+}
+
+form.gap-form input[type="tel"] {
+	color: #8a8a8a;
+	background-color: #ffffff;
+  border-color: #e3e0dc;
+}
+form.gap-form input[type="tel"] {
+	-webkit-appearance: none;
+	outline: none;
+	resize: none;
+	padding: 0.45em 0.5em;
+	border:1px solid #e3e0dc;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-transition: all ease .3s;
+	   -moz-transition: all ease .3s;
+	    -ms-transition: all ease .3s;
+	     -o-transition: all ease .3s;
+	        transition: all ease .3s;
+}
+form.gap-form input[type="tel"]:focus {
+	color: #232a34;
+	background-color: #ffffff;
+  border-color: #776c6c;
+}
+
     </style>
   ';
 
