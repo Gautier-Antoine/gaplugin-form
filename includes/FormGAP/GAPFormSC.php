@@ -100,7 +100,7 @@ class  GAPFormSC extends GAPMail
           $message .= static::getMessages($option, $color, $colordark);
         }
       }
-      $url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+      $url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 
       $message .= '<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: ' . esc_attr( $color ) . '; color: ' . esc_attr( $colordark ) . '; border-radius:5px; padding: 5px 25px; border-bottom: #3c495550 2px solid; margin-bottom: 1px;">
@@ -112,12 +112,12 @@ class  GAPFormSC extends GAPMail
             </tr>
             <tr>
               <td align="center" style="text-align: left; font-size:1.2em; color:#FFF; mso-line-height-rule: exactly; line-height:1.2em;">
-                ' . esc_url( $url ) . '<br>
+                <a href="' . esc_url( $url ) . '" style="color: #FFF;">' . esc_url( $url ) . '</a><br>
               </td>
             </tr>
         </tbody>
       </table>';
-      
+
       $message = static::getHeaderEmail( $color, $colordark ) . $message . static::getFooterEmail( $color, $colordark );
   		// get the blog administrator's email address
       if (isset($_POST['yourname']) && isset($_POST['email'])){
