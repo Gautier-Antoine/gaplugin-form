@@ -4,9 +4,9 @@
  */
 /*
 Plugin Name: GAP-Form
-Plugin URI: https://github.com/Gautier-Antoine/GAP-form-plugin
+Plugin URI: https://github.com/Gautier-Antoine/gaplugin-form
 Description: Form manager on your website
-Version: 1.00.00.00
+Version: 0.01.00.00
 Requires at least: 5.2
 Tested up to: 5.6
 Requires PHP: 7.2

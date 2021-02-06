@@ -56,7 +56,9 @@ class GAPForm extends BaseConst
                   'manage_options',
                   static::ADMINPAGE,
                   [static::class,'GAP_Plugin_admin_page'],
-                  'dashicons-share',
+                  plugin_dir_url( __DIR__ ) . '../images/icon.svg',
+
+                  // 'dashicons-share',
                   30
               );
           }
