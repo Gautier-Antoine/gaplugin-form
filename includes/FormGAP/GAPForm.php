@@ -23,7 +23,7 @@ class GAPForm extends BaseConst
     /**
      * Add color picker script
      */
-    public function admin_form( $hook_suffix ) {
+    public static function admin_form( $hook_suffix ) {
       if ( strpos( $_SERVER['REQUEST_URI'], static::ADMINPAGE . '-' . strtolower( static::PAGE ) ) !== false ) {
         // // check error mail admin_enqueue_scripts
         // wp_register_style('admin_form_gap );
@@ -36,7 +36,7 @@ class GAPForm extends BaseConst
     /**
      * Add color picker script
      */
-    public function enqueue_color_picker( $hook_suffix ) {
+    public static function enqueue_color_picker( $hook_suffix ) {
         // first check that $hook_suffix is appropriate for your admin page
         // admin
         wp_enqueue_style( 'wp-color-picker' );
@@ -46,7 +46,7 @@ class GAPForm extends BaseConst
      * Add settings page
      * Creating a AdminPage in the DashBoard and a SubMenuPage
      */
-    public function add_settings_page()
+    public static function add_settings_page()
     {
           // if the ADMINPAGE doesn't exist, create it
           if ( empty ( $GLOBALS['admin_page_hooks'][static::ADMINPAGE] ) ){
@@ -136,7 +136,7 @@ class GAPForm extends BaseConst
     /**
      * Register and add settings
      */
-    public function page_init() {
+    public static function page_init() {
         $option_name = static::getOptionName();
         $tab = static::getTab();
         register_setting(
@@ -217,7 +217,7 @@ class GAPForm extends BaseConst
      */
 
     // this should be the callback function of register_setting() (last argument)
-    public function sanitize_list($input) {
+    public static function sanitize_list($input) {
       $tab = static::getTab();
 
 
@@ -422,7 +422,7 @@ class GAPForm extends BaseConst
      /**
       * Custom settings section text (Add information about the AdminMenuPage)
       */
-     public function gap_list_section() {
+     public static function gap_list_section() {
        $tab = static::getTab();
        echo 'shortcode = [GAP-' . static::PAGE . ' form=' . esc_attr( $tab ) . ']<br>' .
        __('If you don\'t select an email recipient, the email will be sent to the admin email from your settings.', static::LANGUAGE) . '<br>' .
